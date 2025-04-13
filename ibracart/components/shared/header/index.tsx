@@ -1,4 +1,5 @@
 import { ShoppingCart, UserIcon } from "lucide-react"
+import ModeToggle from './mode-toggle';
 import Image from "next/image"
 import Link from "next/link"
 
@@ -24,6 +25,7 @@ const Header = () => {
           </Link>
         </div>
         <div className='space-x-2'>
+          <ModeToggle />
           <Button asChild variant='ghost'>
             <Link href='/cart'>
               <ShoppingCart />
