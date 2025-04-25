@@ -48,6 +48,7 @@ const sampleData = {
         rating: '4.9',
         numReviews: 3,
         stock: 0,
+        isFeatured: true,
       },
       {
         name: 'Calvin Klein Slim Fit Stretch Shirt',
@@ -63,6 +64,7 @@ const sampleData = {
         rating: '3.6',
         numReviews: 5,
         stock: 10,
+        isFeatured: true,
       },
       {
         name: 'Polo Ralph Lauren Oxford Shirt',
@@ -78,6 +80,7 @@ const sampleData = {
         rating: '4.7',
         numReviews: 18,
         stock: 6,
+        isFeatured: true,
       },
       {
         name: 'Polo Classic Pink Hoodie',
@@ -93,6 +96,7 @@ const sampleData = {
         rating: '4.6',
         numReviews: 12,
         stock: 8,
+        isFeatured: true,
       },
     ],
   };

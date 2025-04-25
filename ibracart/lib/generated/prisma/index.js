@@ -165,11 +165,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://ibracartdb_user:QGYCwagpjjlYUs4LxFgLrCCTriuZN67K@dpg-d0202nbe5dus73bksi9g-a.oregon-postgres.render.com/ibracartdb"
+        "value": null
       }
     }
   },
