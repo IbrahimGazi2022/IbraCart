@@ -1,10 +1,11 @@
 import React from 'react';
-import { AnnouncementBar } from './components';
+import { AnnouncementBar, Header } from './components';
 
 const App = () => {
   return (
     <>
       <AnnouncementBar />
+      <Header />
     </>
   );
 };

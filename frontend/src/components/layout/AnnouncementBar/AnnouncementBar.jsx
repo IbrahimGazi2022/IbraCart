@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // --- ALL CONSTANTS HERE --- 
 const LANGUAGES = [
-    { code: 'bn', name: 'বাংলা', flag: 'https://flagcdn.com/w40/bd.png' },
+    { code: 'bn', name: 'Bangla', flag: 'https://flagcdn.com/w40/bd.png' },
     { code: 'en', name: 'English', flag: 'https://flagcdn.com/w40/us.png' },
     { code: 'de', name: 'Deutsch', flag: 'https://flagcdn.com/w40/de.png' },
     { code: 'es', name: 'Español', flag: 'https://flagcdn.com/w40/es.png' }
@@ -151,7 +151,7 @@ LanguageDropdown.displayName = 'LanguageDropdown';
 const AnnouncementBar = () => {
     return (
         <section className="w-full bg-primary">
-            <div className="max-w-7xl mx-auto py-0.5 pl-2 md:pl-0 text-white flex justify-between items-center">
+            <div className="max-w-7xl mx-auto py-0.5 pl-2 text-white flex justify-between items-center">
                 <LocationSection />
                 <AnnouncementSlider />
                 <LanguageDropdown />
