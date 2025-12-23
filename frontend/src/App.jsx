@@ -1,11 +1,12 @@
 import React from 'react';
-import { AnnouncementBar, Header } from './components';
+import { AnnouncementBar, Header, Navbar } from './components';
 
 const App = () => {
   return (
     <>
       <AnnouncementBar />
       <Header />
+      <Navbar />
     </>
   );
 };
