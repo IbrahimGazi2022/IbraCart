@@ -1,5 +1,8 @@
+import { motion } from 'framer-motion';
 import React, { useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, CircleStar } from 'lucide-react';
+import MainMenu from './MainMenu';
+import HamburgerMenu from './HamburgerMenu';
 
 // --- CONSTANTS --- 
 const MenuItems = [
@@ -35,7 +38,56 @@ const MenuItems = [
     }
 ];
 
-// --- LEFT SIDE BUTTON ---
+// --- ANIMATION ---
+const waveMotion1 = {
+    animate: { x: [0, 4, 0] },
+    transition: { duration: 2, repeat: Infinity, delay: 0 }
+};
+
+const waveMotion2 = {
+    animate: { x: [0, -4, 0] },
+    transition: { duration: 2, repeat: Infinity, delay: 0.1 }
+};
+
+const waveMotion3 = {
+    animate: { x: [0, 4, 0] },
+    transition: { duration: 2, repeat: Infinity, delay: 0.0 }
+};
+
+const waveMotion4 = {
+    animate: { x: [0, -4, 0] },
+    transition: { duration: 2, repeat: Infinity, delay: 0.1 }
+};
+
+const dropdownAnimation = {
+    initial: { y: -20, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    transition: { duration: 0.1 }
+};
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.10
+        }
+    }
+};
+
+const itemVariants = {
+    hidden: { x: -20, opacity: 0 },
+    visible: {
+        x: 0,
+        opacity: 1,
+        transition: {
+            duration: 0.4,
+            ease: "easeOut"
+        }
+    }
+};
+
+// --- ALL CATEGORIES BUTTON ---
 const LeftSideButton = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [hoveredItem, setHoveredItem] = useState(null);
@@ -43,44 +95,51 @@ const LeftSideButton = () => {
     return (
         <div
             onMouseEnter={() => setIsOpen(true)}
+            onMouseLeave={() => {
+                setIsOpen(false);
+                setHoveredItem(null);
+            }}
             className='relative flex items-center cursor-pointer'>
             <h1 className='pl-6 pr-12 py-3 bg-primary text-white font-bold tracking-wider rounded-md flex items-center gap-6'>
                 <div className='flex flex-col gap-1'>
-                    <div className='w-6 h-0.5 bg-white'></div>
-                    <div className='w-4 h-0.5 bg-white'></div>
-                    <div className='w-6 h-0.5 bg-white'></div>
-                    <div className='w-5 h-0.5 bg-white'></div>
+                    <motion.div {...waveMotion1} className='w-6 h-0.5 bg-white'></motion.div>
+                    <motion.div {...waveMotion2} className='w-4 h-0.5 bg-white'></motion.div>
+                    <motion.div {...waveMotion3} className='w-6 h-0.5 bg-white'></motion.div>
+                    <motion.div {...waveMotion4} className='w-5 h-0.5 bg-white'></motion.div>
                 </div>
                 All Categories
             </h1>
             {isOpen && (
-                <div
-                    onMouseEnter={() => setIsOpen(true)}
-                    onMouseLeave={() => setIsOpen(false)}
-                    className="absolute top-14 shadow-[0_8px_24px_rgba(149,157,165,0.2)]">
-                    <div className='w-68 p-4 bg-white rounded-xl'>
+                <motion.div
+                    {...dropdownAnimation}
+                    className="absolute top-12 left-0 z-50 shadow-[0_8px_24px_rgba(149,157,165,0.2)]">
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className='w-72 p-4 bg-white rounded-xl relative'>
                         {MenuItems.map((item) => (
-                            <div key={item.name}>
+                            <motion.div variants={itemVariants} key={item.name}>
                                 <h2
                                     role="button"
                                     tabIndex={0}
                                     onMouseEnter={() => setHoveredItem(item.name)}
-                                    onMouseLeave={() => setHoveredItem(null)}
                                     className="flex items-center justify-between gap-2 text-lg tracking-wider mb-4">
-                                    <div className="flex items-center gap-2">
+                                    <motion.div className="flex items-center gap-2">
                                         <img src={item.src} className='w-6 h-6' />
                                         {item.name}
-                                    </div>
+                                    </motion.div>
                                     <span><ChevronRight className="w-5 h-5" /></span>
                                 </h2>
-                            </div>
+                            </motion.div>
                         ))}
 
                         {hoveredItem && (
-                            <div
+                            <motion.div
                                 onMouseEnter={() => setHoveredItem(hoveredItem)}
                                 onMouseLeave={() => setHoveredItem(null)}
-                                className="absolute left-70 top-0 p-4 w-54 text-lg tracking-wider shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-md">
+                                variants={itemVariants}
+                                className="absolute left-74 top-0 p-4 w-54 bg-white text-lg tracking-wider shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-md">
                                 <ul>
                                     {MenuItems.find(item => item.name === hoveredItem)?.subItems.map((subItem) => (
                                         <li key={subItem} className="flex items-center gap-2 mb-2 hover:text-primary cursor-pointer transition-colors">
@@ -89,12 +148,22 @@ const LeftSideButton = () => {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </motion.div>
                         )}
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             )}
         </div>
+    );
+};
+
+const DealNowButton = () => {
+    return (
+        <a href="/#deals" className='flex gap-2 bg-[#E7F5F3] py-2 px-4 sm:py-3.5 sm:px-6 rounded-lg text-primary text-sm sm:text-base font-bold hover:text-primary transition-colors tracking-wider'>
+            <CircleStar className='w-5 h-5 sm:w-6 sm:h-6' color='#0DA487' />
+            Todays Best Deals
+        </a>
+
     );
 };
 
@@ -102,10 +171,24 @@ const LeftSideButton = () => {
 const Navbar = () => {
     return (
         <nav className='w-full'>
-            <div className='max-w-7xl mx-auto py-3 px-1'>
+            <div className='max-w-7xl mx-auto py-3 px-4 md:px-6 lg:px-0'>
                 <div className='flex items-center gap-4'>
                     <div className='hidden md:block'>
                         <LeftSideButton />
+                    </div>
+
+                    <div className='flex-1 flex justify-center'>
+                        <div className='hidden lg:block'>
+                            <MainMenu />
+                        </div>
+                    </div>
+
+                    <div className='hidden md:block'>
+                        <DealNowButton />
+                    </div>
+
+                    <div className='hidden md:block lg:hidden'>
+                        <HamburgerMenu />
                     </div>
                 </div>
             </div>
@@ -113,4 +196,4 @@ const Navbar = () => {
     );
 };
 
-export default Navbar;
+export default Navbar;  
