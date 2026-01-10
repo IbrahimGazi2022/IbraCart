@@ -107,17 +107,14 @@ const badgeVariants = {
 const TopSellingItems = () => {
     return (
         <div className='w-full'>
-            <div className='max-w-7xl mx-auto px-4 md:px-6 lg:px-0'>
+            <div className='max-w-7xl mx-auto px-4 pt-24 md:pt-0 md:px-6 lg:px-0'>
                 <div>
                     <h1 className='text-2xl md:text-3xl font-semibold mt-2 mb-2 tracking-wider'>
                         Top Selling Items
                     </h1>
                 </div>
 
-                {/* Main container with products on left and banner on right */}
                 <div className='flex flex-col lg:flex-row gap-4 mb-8 pt-4'>
-
-                    {/* Products Grid - Left Side */}
                     <div className='flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
                         {products.map((product, index) => (
                             <motion.div
@@ -187,15 +184,15 @@ const TopSellingItems = () => {
                     {/* --- RIGHT SIDE BANNER IMAGE --- */}
                     <div className='w-full lg:w-64 h-64 lg:h-auto bg-gray-100 relative rounded-lg overflow-hidden'>
                         <img
-                            src="../img/topSell/1.jpg"
+                            src="../img/topSell/11.jpg"
                             className='w-full h-full object-cover'
                             alt="Fresh Products Banner"
                             loading='lazy'
                         />
-                        <div className='absolute inset-0 bg-linear-to-br from-black/10 to-transparent'></div>
                         <div className='absolute top-8 left-6 z-10'>
-                            <p className='mt-2 uppercase text-2xl font-semibold text-gray-700'>fresh</p>
-                            <p className='uppercase text-3xl font-bold text-primary'>products</p>
+                            <p className='mt-2 uppercase text-lg font-semibold text-gray-700'>fresh</p>
+                            <p className='uppercase text-2xl font-semibold text-gray-700'>Organic</p>
+                            <p className='uppercase text-3xl font-bold text-primary'>Vegetables</p>
                             <button className='flex items-center gap-2 mt-6 bg-secondary text-white py-2.5 px-4 rounded-xl hover:bg-secondary/90 transition-all duration-300 hover:gap-3'>
                                 Shop Now
                                 <ArrowRight className='w-5 h-5' />

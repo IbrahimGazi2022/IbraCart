@@ -5,3 +5,7 @@
     --color-primary: #0DA487;
     --color-secondary: #FE5151;
 }
+
+div::-webkit-scrollbar {
+    display: none;
+}

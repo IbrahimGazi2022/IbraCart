@@ -1,5 +1,5 @@
 import React from 'react';
-import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems } from './components';
+import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems, ShopByCategories } from './components';
 
 const App = () => {
   return (
@@ -10,6 +10,7 @@ const App = () => {
       <Hero />
       <TopSellingItems />
       <PaymentOffers />
+      <ShopByCategories />
     </>
   );
 };
