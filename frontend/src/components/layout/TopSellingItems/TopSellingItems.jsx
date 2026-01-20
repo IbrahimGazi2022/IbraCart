@@ -5,7 +5,7 @@ import { ArrowRight, Star, ShoppingBag } from 'lucide-react';
 // --- ALL CONSTANTS HERE ---
 const products = [
     {
-        img: '../img/products/1.jpg',
+        img: '../img/newProducts/1.png',
         name: 'Fresh Organic Apple',
         rating: 4,
         originalPrice: '$6.99',
@@ -14,7 +14,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/products/2.jpg',
+        img: '../img/newProducts/2.png',
         name: 'Fresh Banana Pack',
         rating: 5,
         originalPrice: '$4.99',
@@ -23,7 +23,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/products/3.jpg',
+        img: '../img/newProducts/3.png',
         name: 'Organic Tomatoes',
         rating: 3,
         originalPrice: '$3.99',
@@ -32,25 +32,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/products/4.jpg',
-        name: 'Fresh Milk 1L',
-        rating: 4,
-        originalPrice: '$7.99',
-        price: '$5.99',
-        discount: '25%',
-        inStock: true
-    },
-    {
-        img: '../img/products/5.jpg',
-        name: 'Whole Wheat Bread',
-        rating: 5,
-        originalPrice: '$5.49',
-        price: '$3.99',
-        discount: '27%',
-        inStock: true
-    },
-    {
-        img: '../img/products/6.jpg',
+        img: '../img/newProducts/6.png',
         name: 'Fresh Orange Juice',
         rating: 3,
         originalPrice: '$8.99',
@@ -59,7 +41,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/products/7.jpg',
+        img: '../img/newProducts/7.png',
         name: 'Organic Carrots',
         rating: 4,
         originalPrice: '$3.49',
@@ -68,12 +50,30 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/products/8.jpg',
+        img: '../img/newProducts/8.png',
         name: 'Fresh Green Grapes',
         rating: 5,
         originalPrice: '$6.49',
         price: '$4.79',
         discount: '26%',
+        inStock: true
+    },
+    {
+        img: '../img/newProducts/9.png',
+        name: 'Organic Spinach',
+        rating: 4,
+        originalPrice: '$2.99',
+        price: '$1.99',
+        discount: '33%',
+        inStock: true
+    },
+    {
+        img: '../img/newProducts/10.png',
+        name: 'Chicken Breast',
+        rating: 5,
+        originalPrice: '$12.99',
+        price: '$9.99',
+        discount: '23%',
         inStock: true
     }
 ];
@@ -93,11 +93,11 @@ const cardVariants = {
 
 const TopSellingItems = () => {
     return (
-        <section className='w-full bg-white py-12'>
-            <div className='max-w-7xl mx-auto px-4 md:px-6'>
+        <section className='w-full bg-white py-4'>
+            <div className='max-w-7xl mx-auto px-4 md:px-6 lg:px-0'>
 
                 {/* Section Header */}
-                <div className='flex flex-col md:flex-row items-start md:items-end justify-between mb-10 gap-4'>
+                <div className='flex flex-col md:flex-row items-start md:items-end justify-between mb-6 gap-4'>
                     <div>
                         <div className='flex items-center gap-2 mb-2'>
                             <div className='h-1 w-10 bg-primary rounded-full' />

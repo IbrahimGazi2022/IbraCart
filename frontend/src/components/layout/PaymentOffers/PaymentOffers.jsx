@@ -30,19 +30,16 @@ const OFFERS = [
 ];
 
 // --- ANIMATION VARIANTS ---
-
-// Container variant (Parent) to stagger the children's appearance
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.2, // একের পর এক কার্ড আসবে
+            staggerChildren: 0.2, 
         }
     }
 };
 
-// Card variant (Child)
 const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -59,11 +56,11 @@ const cardVariants = {
 
 const PaymentOffers = () => {
     return (
-        <section className='w-full py-12 bg-white'>
-            <div className='max-w-7xl mx-auto px-4 md:px-6'>
+        <section className='w-full py-6 bg-white'>
+            <div className='max-w-7xl mx-auto px-4 md:px-6 lg:px-0'>
 
                 {/* --- SECTION HEADER --- */}
-                <div className='mb-10'>
+                <div className='mb-6'>
                     <div className='flex items-center gap-2 mb-2'>
                         <div className='h-1 w-10 bg-secondary rounded-full' />
                         <span className='text-secondary font-bold text-sm uppercase tracking-widest'>

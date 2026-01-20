@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star, ShoppingCart, Plus, Minus } from 'lucide-react';
 
@@ -68,14 +68,14 @@ const Categories = [
         name: "Household Items",
         src: "../img/newProducts/1.png"
     }
-
 ];
 
-
+// --- ALL PRODUCTS HERE ---
 const products = [
     {
         img: '../img/newProducts/1.png',
         name: 'Fresh Organic Apple',
+        category: 'Organic Products',
         rating: 4,
         originalPrice: '$6.99',
         price: '$4.99',
@@ -85,6 +85,7 @@ const products = [
     {
         img: '../img/newProducts/2.png',
         name: 'Fresh Banana Pack',
+        category: 'Organic Products',
         rating: 5,
         originalPrice: '$4.99',
         price: '$3.49',
@@ -94,6 +95,7 @@ const products = [
     {
         img: '../img/newProducts/3.png',
         name: 'Organic Tomatoes',
+        category: 'Organic Products',
         rating: 3,
         originalPrice: '$3.99',
         price: '$2.99',
@@ -103,6 +105,7 @@ const products = [
     {
         img: '../img/newProducts/4.png',
         name: 'Fresh Milk 1L',
+        category: 'Dairy Products',
         rating: 4,
         originalPrice: '$7.99',
         price: '$5.99',
@@ -112,6 +115,7 @@ const products = [
     {
         img: '../img/newProducts/5.png',
         name: 'Whole Wheat Bread',
+        category: 'Bakery Items',
         rating: 5,
         originalPrice: '$5.49',
         price: '$3.99',
@@ -121,6 +125,7 @@ const products = [
     {
         img: '../img/newProducts/6.png',
         name: 'Fresh Orange Juice',
+        category: 'Beverages',
         rating: 3,
         originalPrice: '$8.99',
         price: '$6.49',
@@ -130,6 +135,7 @@ const products = [
     {
         img: '../img/newProducts/7.png',
         name: 'Organic Carrots',
+        category: 'Organic Products',
         rating: 4,
         originalPrice: '$3.49',
         price: '$2.49',
@@ -139,6 +145,7 @@ const products = [
     {
         img: '../img/newProducts/8.png',
         name: 'Fresh Green Grapes',
+        category: 'Organic Products',
         rating: 5,
         originalPrice: '$6.49',
         price: '$4.79',
@@ -148,6 +155,7 @@ const products = [
     {
         img: '../img/newProducts/9.png',
         name: 'Organic Spinach',
+        category: 'Organic Products',
         rating: 4,
         originalPrice: '$2.99',
         price: '$1.99',
@@ -157,6 +165,7 @@ const products = [
     {
         img: '../img/newProducts/10.png',
         name: 'Chicken Breast',
+        category: 'Frozen Foods',
         rating: 5,
         originalPrice: '$12.99',
         price: '$9.99',
@@ -166,6 +175,7 @@ const products = [
     {
         img: '../img/newProducts/11.png',
         name: 'Brown Eggs Pack',
+        category: 'Dairy Products',
         rating: 4,
         originalPrice: '$5.99',
         price: '$4.29',
@@ -175,6 +185,7 @@ const products = [
     {
         img: '../img/newProducts/12.png',
         name: 'Organic Potatoes',
+        category: 'Organic Products',
         rating: 3,
         originalPrice: '$4.49',
         price: '$3.19',
@@ -184,6 +195,7 @@ const products = [
     {
         img: '../img/newProducts/13.png',
         name: 'Fresh Strawberries',
+        category: 'Organic Products',
         rating: 5,
         originalPrice: '$7.49',
         price: '$5.49',
@@ -193,6 +205,7 @@ const products = [
     {
         img: '../img/newProducts/14.png',
         name: 'Almond Milk 1L',
+        category: 'Beverages',
         rating: 4,
         originalPrice: '$6.99',
         price: '$5.19',
@@ -202,6 +215,7 @@ const products = [
     {
         img: '../img/newProducts/15.png',
         name: 'Organic Honey',
+        category: 'Health',
         rating: 5,
         originalPrice: '$9.99',
         price: '$7.49',
@@ -211,6 +225,7 @@ const products = [
     {
         img: '../img/newProducts/17.png',
         name: 'Organic Cucumber',
+        category: 'Organic Products',
         rating: 3,
         originalPrice: '$2.49',
         price: '$1.79',
@@ -220,23 +235,14 @@ const products = [
     {
         img: '../img/newProducts/18.png',
         name: 'Fresh Yogurt Cup',
+        category: 'Dairy Products',
         rating: 5,
         originalPrice: '$3.99',
         price: '$2.99',
         discount: '25%',
         inStock: true
-    },
-    {
-        img: '../img/newProducts/6.png',
-        name: 'Fresh Orange Juice',
-        rating: 3,
-        originalPrice: '$8.99',
-        price: '$6.49',
-        discount: '28%',
-        inStock: true
-    },
+    }
 ];
-
 
 // --- ANIMATION ---
 const cardVariants = {
@@ -244,12 +250,17 @@ const cardVariants = {
 };
 
 // --- SUB-COMPONENTS ---
-const CategoryItem = ({ category }) => (
-    <div className='flex flex-col items-center group cursor-pointer min-w-30'>
-        <div className='w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-green-50 transition-colors border border-transparent group-hover:border-green-100'>
+const CategoryItem = ({ category, isSelected, onClick }) => (
+    <div
+        onClick={onClick}
+        className={`flex flex-col items-center group cursor-pointer min-w-30 ${isSelected ? 'opacity-100' : 'opacity-60'}`}
+    >
+        <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-3 transition-colors border ${isSelected ? 'bg-green-100 border-green-500' : 'bg-gray-50 border-transparent group-hover:bg-green-50 group-hover:border-green-100'}`}>
             <img src={category.src} alt={category.name} className='w-12 h-12 object-contain group-hover:scale-110 transition-transform' />
         </div>
-        <p className='text-sm font-semibold text-gray-600 text-center leading-tight group-hover:text-green-600'>{category.name}</p>
+        <p className={`text-sm font-semibold text-center leading-tight ${isSelected ? 'text-green-600' : 'text-gray-600 group-hover:text-green-600'}`}>
+            {category.name}
+        </p>
     </div>
 );
 
@@ -269,8 +280,8 @@ const ProductCard = ({ product }) => (
             {product.inStock ? '● In Stock' : '● Out of Stock'}
         </div>
 
-        <div className='h-32 flex items-center justify-center mb-4'>
-            <img src={product.img} alt={product.name} className='max-h-full object-contain' />
+        <div className='h-24 flex items-center justify-center mb-4'>
+            <img src={product.img} alt={product.name} className='max-h-20 object-contain' />
         </div>
 
         <h3 className='text-sm font-bold text-gray-800 line-clamp-1 mb-1'>{product.name}</h3>
@@ -302,6 +313,8 @@ const ProductCard = ({ product }) => (
 // --- MAIN COMPONENT ---
 const ShopByCategories = () => {
     const scrollRef = useRef(null);
+    const [selectedCategory, setSelectedCategory] = useState('All');
+    const filteredProducts = selectedCategory === 'All' ? products : products.filter(product => product.category === selectedCategory);
 
     const scroll = (direction) => {
         const { current } = scrollRef;
@@ -310,11 +323,11 @@ const ShopByCategories = () => {
     };
 
     return (
-        <section className='bg-gray-50/50 py-12'>
-            <div className='max-w-7xl mx-auto px-4'>
+        <section className='bg-gray-50/50 py-6'>
+            <div className='max-w-7xl mx-auto px-4 lg:px-0'>
 
                 {/* Header Section */}
-                <div className='flex justify-between items-end mb-8'>
+                <div className='flex justify-between items-end mb-6'>
                     <div>
                         <div className='flex items-center gap-2 mb-2'>
                             <div className='h-1 w-10 bg-green-600 rounded-full' />
@@ -332,28 +345,44 @@ const ShopByCategories = () => {
                     </div>
                 </div>
 
-                {/* Categories Slider */}
+
+                {/* --- CATEGORIES --- */}
                 <div
                     ref={scrollRef}
-                    className='flex gap-6 overflow-x-auto pb-8 no-scrollbar scroll-smooth'
+                    className='flex gap-6 overflow-x-auto pb-6 no-scrollbar scroll-smooth'
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                    {Categories.map((cat, i) => <CategoryItem key={i} category={cat} />)}
+                    {/* All Button */}
+                    <div
+                        onClick={() => setSelectedCategory('All')}
+                        className={`flex flex-col items-center group cursor-pointer min-w-30 ${selectedCategory === 'All' ? 'opacity-100' : 'opacity-60'}`}
+                    >
+                        <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-3 transition-colors border ${selectedCategory === 'All' ? 'bg-green-100 border-green-500' : 'bg-gray-50 border-transparent group-hover:bg-green-50 group-hover:border-green-100'}`}>
+                            <span className='text-2xl'>🛒</span>
+                        </div>
+                        <p className={`text-sm font-semibold text-center leading-tight ${selectedCategory === 'All' ? 'text-green-600' : 'text-gray-600 group-hover:text-green-600'}`}>
+                            All Items
+                        </p>
+                    </div>
+
+                    {Categories.map((cat, i) => (
+                        <CategoryItem
+                            key={i}
+                            category={cat}
+                            isSelected={selectedCategory === cat.name}
+                            onClick={() => setSelectedCategory(cat.name)}
+                        />
+                    ))}
                 </div>
 
                 {/* Products Grid */}
-                <div className='mt-12'>
-                    <div className='flex items-center justify-between mb-6'>
-                        <h3 className='text-xl font-bold text-gray-800'>Featured Products</h3>
-                        <button className='text-green-600 font-semibold text-sm hover:underline'>View All</button>
-                    </div>
+                <div className='mt-4'>
                     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-5'>
-                        {products.slice(0, 12).map((prod, i) => (
+                        {filteredProducts.slice(0, 12).map((prod, i) => (
                             <ProductCard key={i} product={prod} />
                         ))}
                     </div>
                 </div>
-
             </div>
         </section>
     );
