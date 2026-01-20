@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, Star, ShoppingBag } from 'lucide-react';
 
 // --- ALL CONSTANTS HERE ---
 const products = [
@@ -90,118 +90,115 @@ const cardVariants = {
     }
 };
 
-const badgeVariants = {
-    initial: {
-        scale: 0.8
-    },
-    animate: {
-        scale: [0.8, 0.9, 0.8],
-        transition: {
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-        }
-    }
-};
 
 const TopSellingItems = () => {
     return (
-        <div className='w-full'>
-            <div className='max-w-7xl mx-auto px-4 pt-24 md:pt-0 md:px-6 lg:px-0'>
-                <div>
-                    <h1 className='text-2xl md:text-3xl font-semibold mt-2 mb-2 tracking-wider'>
-                        Top Selling Items
-                    </h1>
+        <section className='w-full bg-white py-12'>
+            <div className='max-w-7xl mx-auto px-4 md:px-6'>
+
+                {/* Section Header */}
+                <div className='flex flex-col md:flex-row items-start md:items-end justify-between mb-10 gap-4'>
+                    <div>
+                        <div className='flex items-center gap-2 mb-2'>
+                            <div className='h-1 w-10 bg-primary rounded-full' />
+                            <span className='text-primary font-bold text-sm uppercase tracking-widest'>Best Sellers</span>
+                        </div>
+                        <h2 className='text-3xl md:text-4xl font-black text-gray-900 tracking-tight'>Top Selling Items</h2>
+                    </div>
+                    <button className='text-primary font-bold text-sm hover:underline flex items-center gap-1 group'>
+                        View All Items
+                        <ArrowRight size={18} className='group-hover:translate-x-1 transition-transform' />
+                    </button>
                 </div>
 
-                <div className='flex flex-col lg:flex-row gap-4 mb-8 pt-4'>
-                    <div className='flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+                <div className='flex flex-col lg:flex-row gap-6'>
+
+                    {/* --- LEFT SIDE: PRODUCT GRID --- */}
+                    <div className='flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
                         {products.map((product, index) => (
                             <motion.div
                                 key={index}
-                                className='h-80 bg-white rounded-lg p-4 flex flex-col relative shadow-sm'
                                 variants={cardVariants}
-                                initial="initial"
                                 whileHover="hover"
-                                transition={{ duration: 0.3 }}
+                                className='group bg-white rounded-2xl p-4 border border-gray-100 shadow-sm hover:shadow-xl transition-all relative flex flex-col'
                             >
-
-                                {/* --- DISCOUNT TAG --- */}
-                                <motion.div
-                                    variants={badgeVariants}
-                                    initial="initial"
-                                    animate="animate"
-                                    className='absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10'
-                                >
-                                    {product.discount} OFF
-                                </motion.div>
-
-                                {/* --- STOCK TAG --- */}
-                                <div className='absolute top-2 left-2 z-10'>
-                                    <span className={`text-xs font-semibold px-2 py-1 rounded-md ${product.inStock
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-red-100 text-red-700'
-                                        }`}>
-                                        {product.inStock ? 'In Stock' : 'Out of Stock'}
+                                {/* Discount Tag */}
+                                <div className='absolute top-3 right-3 z-10'>
+                                    <span className='bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-sm'>
+                                        {product.discount} OFF
                                     </span>
                                 </div>
 
-                                {/* --- PRODUCT IMAGE --- */}
-                                <div className='flex-1 flex items-center justify-center rounded-lg mb-3 mt-6'>
+                                {/* Stock Status */}
+                                <div className='mb-2'>
+                                    <span className={`text-[10px] font-bold uppercase tracking-widest ${product.inStock ? 'text-green-500' : 'text-red-500'}`}>
+                                        {product.inStock ? '● In Stock' : '● Out of Stock'}
+                                    </span>
+                                </div>
+
+                                {/* Product Image */}
+                                <div className='h-40 w-full overflow-hidden flex items-center justify-center rounded-xl mb-4 bg-gray-50/50'>
                                     <img
                                         src={product.img}
-                                        className='w-full h-full object-contain'
+                                        className='w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-500'
                                         alt={product.name}
-                                        loading='lazy'
                                     />
                                 </div>
 
-                                {/* --- PRODUCT RATINGS --- */}
-                                <div className='flex gap-1 mb-1'>
-                                    {[...Array(5)].map((_, i) => (
-                                        <Star
-                                            key={i}
-                                            className={`w-4 h-4 ${i < product.rating
-                                                ? 'fill-yellow-400 text-yellow-400'
-                                                : 'fill-gray-300 text-gray-300'
-                                                }`}
-                                        />
-                                    ))}
-                                </div>
+                                {/* Content */}
+                                <div className='flex flex-col grow'>
+                                    <div className='flex gap-0.5 mb-2'>
+                                        {[...Array(5)].map((_, i) => (
+                                            <Star key={i} size={12} className={i < product.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'} />
+                                        ))}
+                                    </div>
 
-                                {/* --- PRODUCT NAME --- */}
-                                <h3 className='text-sm font-medium text-gray-700 tracking-wider mb-1'>{product.name}</h3>
+                                    <h3 className='text-sm font-bold text-gray-700 group-hover:text-primary transition-colors line-clamp-2 mb-2'>
+                                        {product.name}
+                                    </h3>
 
-                                {/* --- PRODUCT PRICE --- */}
-                                <div className='flex items-center gap-2 mt-auto'>
-                                    <p className='text-xl font-bold text-primary'>{product.price}</p>
-                                    <p className='text-sm text-gray-400 line-through'>{product.originalPrice}</p>
+                                    <div className='mt-auto flex items-center justify-between'>
+                                        <div>
+                                            <p className='text-lg font-bold text-gray-900 leading-none'>{product.price}</p>
+                                            <p className='text-xs text-gray-400 line-through mt-1'>{product.originalPrice}</p>
+                                        </div>
+                                        <button className='p-2 bg-gray-50 text-gray-400 hover:bg-primary hover:text-white rounded-xl transition-all'>
+                                            <ShoppingBag size={18} />
+                                        </button>
+                                    </div>
                                 </div>
                             </motion.div>
                         ))}
                     </div>
 
-                    {/* --- RIGHT SIDE BANNER IMAGE --- */}
-                    <div className='w-full lg:w-64 h-64 lg:h-auto bg-gray-100 relative rounded-lg overflow-hidden'>
+                    {/* --- RIGHT SIDE: FEATURED BANNER --- */}
+                    <div className='w-full lg:w-72 relative rounded-3xl overflow-hidden group min-h-400px'>
                         <img
                             src="../img/topSell/11.jpg"
-                            className='w-full h-full object-cover'
-                            alt="Fresh Products Banner"
-                            loading='lazy'
+                            className='absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700'
+                            alt="Fresh Banner"
                         />
-                        <div className='absolute top-8 left-6 z-10'>
-                            <p className='mt-2 uppercase text-lg font-semibold text-gray-700'>fresh</p>
-                            <p className='uppercase text-2xl font-semibold text-gray-700'>Organic</p>
-                            <p className='uppercase text-3xl font-bold text-primary'>Vegetables</p>
-                            <button className='flex items-center gap-2 mt-6 bg-secondary text-white py-2.5 px-4 rounded-xl hover:bg-secondary/90 transition-all duration-300 hover:gap-3'>
+                        {/* Gradient Overlay for Text Readability */}
+                        <div className='absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent lg:bg-none'></div>
+
+                        <div className='relative h-full p-8 flex flex-col justify-start z-10'>
+                            <span className='text-primary font-bold tracking-widest uppercase text-sm mb-2'>Fresh & Natural</span>
+                            <h4 className='text-3xl font-black text-gray-800 leading-tight uppercase'>
+                                Organic <br />
+                                <span className='text-primary'>Vegetables</span>
+                            </h4>
+                            <p className='text-gray-600 mt-4 text-sm font-medium'>Get up to 30% Off on your first order</p>
+
+                            <button className='mt-auto lg:mt-8 flex items-center justify-center gap-2 bg-primary text-white py-4 px-6 rounded-2xl font-bold shadow-lg shadow-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all group/btn'>
                                 Shop Now
-                                <ArrowRight className='w-5 h-5' />
+                                <ArrowRight className='w-5 h-5 group-hover/btn:translate-x-1 transition-transform' />
                             </button>
                         </div>
                     </div>
+
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 
