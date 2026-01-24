@@ -1,0 +1,8 @@
+// -- LAYOUT COMPONENTS -- 
+export { default as Header } from "./layout/Header/Header";
+export { default as Navbar } from "./layout/Navbar/Navbar";
+export { default as AnnouncementBar } from "./layout/AnnouncementBar/AnnouncementBar";
+export { default as Hero } from "./layout/Hero/Hero";
+export { default as PaymentOffers } from "./layout/PaymentOffers/PaymentOffers";
+export { default as TopSellingItems } from "./layout/TopSellingItems/TopSellingItems";
+export { default as ShopByCategories } from "./layout/ShopByCategories/ShopByCategories";

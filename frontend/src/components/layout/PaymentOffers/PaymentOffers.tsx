@@ -1,10 +1,19 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
+
+// --- TYPES ---
+interface Offer {
+    src: string;
+    bankName: string;
+    discount: string;
+    condition: string;
+    bgColor: string;
+    borderColor: string;
+}
 
 // --- DATA: Payment/Bank Offers ---
-const OFFERS = [
+const OFFERS: Offer[] = [
     {
-        src: '../img/payments/1.svg',
+        src: '/img/payments/1.svg',
         bankName: 'Visa Card',
         discount: '10% OFF',
         condition: 'Min Spend $20',
@@ -12,7 +21,7 @@ const OFFERS = [
         borderColor: 'border-blue-100'
     },
     {
-        src: '../img/payments/2.svg',
+        src: '/img/payments/2.svg',
         bankName: 'Mastercard',
         discount: '15% OFF',
         condition: 'Min Spend $50',
@@ -20,9 +29,9 @@ const OFFERS = [
         borderColor: 'border-orange-100'
     },
     {
-        src: '../img/payments/3.svg',
+        src: '/img/payments/3.svg',
         bankName: 'Digital Wallet',
-        discount: ' Cashback',
+        discount: 'Cashback',
         condition: 'Up to $10 on first pay',
         bgColor: 'bg-green-50/50',
         borderColor: 'border-green-100'
@@ -30,17 +39,17 @@ const OFFERS = [
 ];
 
 // --- ANIMATION VARIANTS ---
-const containerVariants = {
+const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.2, 
+            staggerChildren: 0.2,
         }
     }
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
         opacity: 1,
@@ -80,7 +89,7 @@ const PaymentOffers = () => {
                     viewport={{ once: true, amount: 0.2 }}
                     className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
                 >
-                    {OFFERS.map((item, index) => (
+                    {OFFERS.map((item: Offer, index: number) => (
                         <motion.div
                             key={index}
                             variants={cardVariants}
@@ -102,7 +111,11 @@ const PaymentOffers = () => {
                                     {item.condition}
                                 </p>
 
-                                <button className='mt-3 text-xs font-bold text-gray-800 underline underline-offset-4 hover:text-secondary transition-colors'>
+                                <button
+                                    type="button"
+                                    className='mt-3 text-xs font-bold text-gray-800 underline underline-offset-4 hover:text-secondary transition-colors'
+                                    aria-label={`Terms and conditions for ${item.bankName} offer`}
+                                >
                                     T&C Apply
                                 </button>
                             </div>
@@ -111,7 +124,7 @@ const PaymentOffers = () => {
                             <div className='relative z-10'>
                                 <img
                                     src={item.src}
-                                    alt={item.bankName}
+                                    alt={`${item.bankName} logo`}
                                     className='w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-sm group-hover:rotate-12 transition-transform duration-300'
                                 />
                             </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -8,13 +7,6 @@ const Image = {
     img2: '../img/hero/2.jpg',
     img3: '../img/hero/3.jpg',
 };
-
-// --- ANIMATION HERE ---
-const arrowAnimation = {
-    x: [0, 6, 0],
-    transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
-};
-
 
 // --- LEFT SIDE IMAGE --- 
 const LeftSideImage = () => {
@@ -38,7 +30,9 @@ const LeftSideImage = () => {
                 </h1>
                 <button className='flex items-center gap-2 mt-4 bg-secondary text-white py-2 md:py-3 px-2 md:px-5 rounded-xl hover:bg-secondary/90 transition-colors cursor-pointer'>
                     Shop Now
-                    <motion.div animate={arrowAnimation}>
+                    <motion.div
+                        animate={{ x: [0, 6, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
                         <ArrowRight />
                     </motion.div>
                 </button>

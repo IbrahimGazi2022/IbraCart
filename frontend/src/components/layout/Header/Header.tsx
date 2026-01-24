@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { Search, PhoneCall, Heart, ShoppingCart, User } from 'lucide-react';
 
 // --- ALL CONSTANTS HERE ---
@@ -31,7 +31,7 @@ const Logo = memo(() => {
 const SearchBox = memo(() => {
     const [searchQuery, setSearchQuery] = useState('');
 
-    const handleChange = useCallback((e) => {
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
     }, []);
 

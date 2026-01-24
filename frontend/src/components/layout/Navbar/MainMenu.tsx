@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
@@ -25,9 +25,9 @@ const iconVariants = {
 
 
 const MainMenu = () => {
-    const [hoveredIndex, setHoveredIndex] = useState(null);
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-    const handleMouseEnter = (index) => {
+    const handleMouseEnter = (index: number) => {
         setHoveredIndex(index);
     };
 

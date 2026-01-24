@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 
 const HamburgerMenu = memo(() => {
     const [isOpen, setIsOpen] = useState(false);

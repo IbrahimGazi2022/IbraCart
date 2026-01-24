@@ -1,11 +1,21 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { ArrowRight, Star, ShoppingBag } from 'lucide-react';
 
+// --- TYPE DEFINITIONS ---
+interface Product {
+    img: string;
+    name: string;
+    rating: number;
+    originalPrice: string;
+    price: string;
+    discount: string;
+    inStock: boolean;
+}
+
 // --- ALL CONSTANTS HERE ---
-const products = [
+const products: Product[] = [
     {
-        img: '../img/newProducts/1.png',
+        img: '/img/newProducts/1.png',
         name: 'Fresh Organic Apple',
         rating: 4,
         originalPrice: '$6.99',
@@ -14,7 +24,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/newProducts/2.png',
+        img: '/img/newProducts/2.png',
         name: 'Fresh Banana Pack',
         rating: 5,
         originalPrice: '$4.99',
@@ -23,7 +33,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/newProducts/3.png',
+        img: '/img/newProducts/3.png',
         name: 'Organic Tomatoes',
         rating: 3,
         originalPrice: '$3.99',
@@ -32,7 +42,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/newProducts/6.png',
+        img: '/img/newProducts/6.png',
         name: 'Fresh Orange Juice',
         rating: 3,
         originalPrice: '$8.99',
@@ -41,7 +51,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/newProducts/7.png',
+        img: '/img/newProducts/7.png',
         name: 'Organic Carrots',
         rating: 4,
         originalPrice: '$3.49',
@@ -50,7 +60,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/newProducts/8.png',
+        img: '/img/newProducts/8.png',
         name: 'Fresh Green Grapes',
         rating: 5,
         originalPrice: '$6.49',
@@ -59,7 +69,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/newProducts/9.png',
+        img: '/img/newProducts/9.png',
         name: 'Organic Spinach',
         rating: 4,
         originalPrice: '$2.99',
@@ -68,7 +78,7 @@ const products = [
         inStock: true
     },
     {
-        img: '../img/newProducts/10.png',
+        img: '/img/newProducts/10.png',
         name: 'Chicken Breast',
         rating: 5,
         originalPrice: '$12.99',
@@ -79,7 +89,7 @@ const products = [
 ];
 
 // --- ANIMATION VARIANTS ---
-const cardVariants = {
+const cardVariants: Variants = {
     initial: {
         scale: 1,
         boxShadow: "0 1px 3px 0 rgba(0,0,0,0.02), 0 0 0 1px rgba(27,31,35,0.15)"
@@ -115,7 +125,7 @@ const TopSellingItems = () => {
 
                     {/* --- LEFT SIDE: PRODUCT GRID --- */}
                     <div className='flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
-                        {products.map((product, index) => (
+                        {products.map((product: Product, index: number) => (
                             <motion.div
                                 key={index}
                                 variants={cardVariants}
@@ -148,7 +158,7 @@ const TopSellingItems = () => {
                                 {/* Content */}
                                 <div className='flex flex-col grow'>
                                     <div className='flex gap-0.5 mb-2'>
-                                        {[...Array(5)].map((_, i) => (
+                                        {[...Array(5)].map((_, i: number) => (
                                             <Star key={i} size={12} className={i < product.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'} />
                                         ))}
                                     </div>
@@ -174,7 +184,7 @@ const TopSellingItems = () => {
                     {/* --- RIGHT SIDE: FEATURED BANNER --- */}
                     <div className='w-full lg:w-72 relative rounded-3xl overflow-hidden group min-h-400px'>
                         <img
-                            src="../img/topSell/11.jpg"
+                            src="/img/topSell/11.jpg"
                             className='absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700'
                             alt="Fresh Banner"
                         />

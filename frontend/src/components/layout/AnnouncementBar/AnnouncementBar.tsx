@@ -1,9 +1,15 @@
-import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
+import { useState, useRef, useEffect, useCallback, memo, RefObject } from 'react';
 import { MapPin, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- ALL CONSTANTS HERE --- 
-const LANGUAGES = [
+interface Language {
+    code: string;
+    name: string;
+    flag: string;
+}
+
+const LANGUAGES: Language[] = [
     { code: 'bn', name: 'Bangla', flag: 'https://flagcdn.com/w40/bd.png' },
     { code: 'en', name: 'English', flag: 'https://flagcdn.com/w40/us.png' },
     { code: 'de', name: 'Deutsch', flag: 'https://flagcdn.com/w40/de.png' },
@@ -24,13 +30,14 @@ const CONFIG = {
 };
 
 // --- CUSTOM HOOKS FOR DROPDOWN CLOSE ---
-const useClickOutside = (ref, callback) => {
+const useClickOutside = <T extends HTMLElement>(
+    ref: RefObject<T>, callback: () => void) => {
     const memoizedCallback = useCallback(callback, [callback]);
 
     useEffect(() => {
-        const handleClick = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                memoizedCallback(); 
+        const handleClick = (e: MouseEvent) => {
+            if (ref.current && !ref.current.contains(e.target as Node)) {
+                memoizedCallback();
             }
         };
 
@@ -39,20 +46,21 @@ const useClickOutside = (ref, callback) => {
     }, [ref, memoizedCallback]);
 };
 
+
 // --- CUSTOM HOOKS FOR SLIDING TEXT ---
-const useRotatingIndex = (length, interval) => {
+const useRotatingIndex = (length: number, interval: number): number => {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setIndex((prev) => (prev + 1) % length);
         }, interval);
-
         return () => clearInterval(timer);
     }, [length, interval]);
 
     return index;
 };
+
 
 // --- LOCATION COMPONENTS ---
 const LocationSection = memo(() => (
@@ -64,6 +72,7 @@ const LocationSection = memo(() => (
     </div>
 ));
 LocationSection.displayName = 'LocationSection';
+
 
 // --- SLIDING ANNOUNCEMENT ---
 const AnnouncementSlider = memo(() => {
@@ -88,16 +97,15 @@ const AnnouncementSlider = memo(() => {
 });
 AnnouncementSlider.displayName = 'AnnouncementSlider';
 
+
 // --- LANGUAGE DROPDOWN ---
 const LanguageDropdown = memo(() => {
-    const dropdownRef = useRef(null);
-    const [isOpen, setIsOpen] = useState(false);
-    const [selected, setSelected] = useState(LANGUAGES[1]);
-
-    // ✅ FIX: Ekhon setIsOpen available, tai closeDropdown thik hobe
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [selected, setSelected] = useState<Language>(LANGUAGES[1]);
     const closeDropdown = useCallback(() => setIsOpen(false), []);
 
-    const handleSelect = useCallback((language) => {
+    const handleSelect = useCallback((language: Language) => {
         setSelected(language);
         setIsOpen(false);
     }, []);

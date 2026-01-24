@@ -1,9 +1,36 @@
-import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, Variants } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star, ShoppingCart, Plus, Minus } from 'lucide-react';
 
+// --- TYPE ---
+interface Category {
+    name: string;
+    src: string;
+}
+
+interface Product {
+    img: string;
+    name: string;
+    category: string;
+    rating: number;
+    originalPrice: string;
+    price: string;
+    discount: string;
+    inStock: boolean;
+}
+
+interface CategoryItemProps {
+    category: Category;
+    isSelected: boolean;
+    onClick: () => void;
+}
+
+interface ProductCardProps {
+    product: Product;
+}
+
 // --- ALL CONSTANTS HERE ---
-const Categories = [
+const Categories: Category[] = [
     {
         name: "Biscuits & Snacks",
         src: "../img/newProducts/1.png"
@@ -71,7 +98,7 @@ const Categories = [
 ];
 
 // --- ALL PRODUCTS HERE ---
-const products = [
+const products: Product[] = [
     {
         img: '../img/newProducts/1.png',
         name: 'Fresh Organic Apple',
@@ -245,12 +272,12 @@ const products = [
 ];
 
 // --- ANIMATION ---
-const cardVariants = {
+const cardVariants: Variants = {
     hover: { y: -5, transition: { duration: 0.2 } }
 };
 
 // --- SUB-COMPONENTS ---
-const CategoryItem = ({ category, isSelected, onClick }) => (
+const CategoryItem = ({ category, isSelected, onClick }: CategoryItemProps) => (
     <div
         onClick={onClick}
         className={`flex flex-col items-center group cursor-pointer min-w-30 ${isSelected ? 'opacity-100' : 'opacity-60'}`}
@@ -264,7 +291,7 @@ const CategoryItem = ({ category, isSelected, onClick }) => (
     </div>
 );
 
-const ProductCard = ({ product }) => (
+const ProductCard = ({ product }: ProductCardProps) => (
     <motion.div
         variants={cardVariants}
         whileHover="hover"
@@ -312,14 +339,13 @@ const ProductCard = ({ product }) => (
 
 // --- MAIN COMPONENT ---
 const ShopByCategories = () => {
-    const scrollRef = useRef(null);
-    const [selectedCategory, setSelectedCategory] = useState('All');
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [selectedCategory, setSelectedCategory] = useState<string>('All');
     const filteredProducts = selectedCategory === 'All' ? products : products.filter(product => product.category === selectedCategory);
 
-    const scroll = (direction) => {
-        const { current } = scrollRef;
-        const scrollAmount = 300;
-        current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    const scroll = (direction: 'left' | 'right') => {
+        if (!scrollRef.current) return;
+        scrollRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: 'smooth' });
     };
 
     return (
