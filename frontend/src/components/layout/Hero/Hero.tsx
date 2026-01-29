@@ -18,22 +18,22 @@ const LeftSideImage = () => {
                 className='w-full h-full object-cover absolute rounded-md'
             />
 
-            <div className='relative z-10 px-6 md:px-12'>
-                <p className='flex items-center gap-2 text-sm md:text-lg text-gray-600 tracking-wider'>
+            <div className='relative z-10 px-[clamp(1.5rem,4vw,3rem)]'>
+                <p className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] text-[clamp(0.875rem,1.5vw,1.125rem)] text-gray-600 tracking-wider'>
                     Exclusive Offer
-                    <span className='bg-secondary text-white px-1 md:px-2.5 py-1 md:py-1.5 font-bold rounded-full'>30% Off</span>
+                    <span className='bg-secondary text-white px-[clamp(0.25rem,1.5vw,0.625rem)] py-[clamp(0.25rem,1vw,0.375rem)] font-bold rounded-full text-[clamp(0.75rem,1.2vw,0.875rem)]'>30% Off</span>
                 </p>
-                <h1 className='text-lg md:text-5xl font-semibold uppercase mt-4 tracking-wide leading-tight'>
+                <h1 className='text-[clamp(1.125rem,5vw,3rem)] font-semibold uppercase mt-[clamp(0.75rem,2vw,1rem)] tracking-wide leading-tight'>
                     <span className='block'>Stay home</span>
                     <span className='block'>delivered your</span>
                     <span className='block text-primary font-extrabold'>Daily Needs</span>
                 </h1>
-                <button className='flex items-center gap-2 mt-4 bg-secondary text-white py-2 md:py-3 px-2 md:px-5 rounded-xl hover:bg-secondary/90 transition-colors cursor-pointer'>
+                <button className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] mt-[clamp(0.75rem,2vw,1rem)] bg-secondary text-white py-[clamp(0.5rem,1.5vw,0.75rem)] px-[clamp(0.5rem,3vw,1.25rem)] rounded-xl hover:bg-secondary/90 transition-colors cursor-pointer text-[clamp(0.875rem,1.5vw,1rem)]'>
                     Shop Now
                     <motion.div
                         animate={{ x: [0, 6, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
-                        <ArrowRight />
+                        <ArrowRight className='w-[clamp(20px,4vw,24px)] h-[clamp(20px,4vw,24px)]' />
                     </motion.div>
                 </button>
             </div>
@@ -52,18 +52,18 @@ const RightSideImage1 = () => {
                 className='w-full h-full absolute object-cover rounded-md'
             />
 
-            <div className='relative z-10 px-8'>
-                <p className='flex items-center gap-2 text-secondary font-semibold text-3xl md:text-5xl'>
+            <div className='relative z-10 px-[clamp(1.5rem,3vw,2rem)]'>
+                <p className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] text-secondary font-semibold text-[clamp(1.875rem,5vw,3rem)]'>
                     45%
-                    <span className='text-gray-500 text-lg md:text-xl mt-4 uppercase'>Off</span>
+                    <span className='text-gray-500 text-[clamp(1.125rem,2vw,1.25rem)] mt-[clamp(0.75rem,2vw,1rem)] uppercase'>Off</span>
                 </p>
-                <p className='mt-2 capitalize text-2xl md:text-3xl font-semibold text-primary'>Nut Collection</p>
-                <span className='block text-gray-500 mt-2 tracking-wide text-sm'>We deliver organic products</span>
-                <span className='block text-gray-500 tracking-wide text-sm'>vegetables & fruits</span>
+                <p className='mt-[clamp(0.375rem,1vw,0.5rem)] capitalize text-[clamp(1.5rem,3vw,1.875rem)] font-semibold text-primary'>Nut Collection</p>
+                <span className='block text-gray-500 mt-[clamp(0.375rem,1vw,0.5rem)] tracking-wide text-[clamp(0.875rem,1.2vw,0.875rem)]'>We deliver organic products</span>
+                <span className='block text-gray-500 tracking-wide text-[clamp(0.875rem,1.2vw,0.875rem)]'>vegetables & fruits</span>
 
-                <button className='flex items-center gap-2 mt-4 text-black hover:text-primary transition-colors'>
+                <button className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] mt-[clamp(0.75rem,2vw,1rem)] text-black hover:text-primary transition-colors text-[clamp(0.875rem,1.5vw,1rem)]'>
                     Shop Now
-                    <ArrowRight size={20} />
+                    <ArrowRight className='w-[clamp(18px,3vw,20px)] h-[clamp(18px,3vw,20px)]' />
                 </button>
             </div>
         </div>
@@ -81,18 +81,18 @@ const RightSideImage2 = () => {
                 className='w-full h-full absolute object-cover rounded-md'
             />
 
-            <div className='relative z-10 px-8'>
-                <p className='flex items-center gap-2 text-secondary font-semibold text-4xl md:text-5xl'>
+            <div className='relative z-10 px-[clamp(1.5rem,3vw,2rem)]'>
+                <p className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] text-secondary font-semibold text-[clamp(2rem,5vw,3rem)]'>
                     25%
-                    <span className='text-gray-500 text-lg md:text-xl mt-4 uppercase'>Off</span>
+                    <span className='text-gray-500 text-[clamp(1.125rem,2vw,1.25rem)] mt-[clamp(0.75rem,2vw,1rem)] uppercase'>Off</span>
                 </p>
-                <p className='mt-2 capitalize text-2xl md:text-3xl font-semibold text-primary'>Fresh Fruits</p>
-                <span className='block text-gray-500 mt-2 tracking-wide text-sm'>100% Natural & Organic</span>
-                <span className='block text-gray-500 tracking-wide text-sm'>Fresh from farm</span>
+                <p className='mt-[clamp(0.375rem,1vw,0.5rem)] capitalize text-[clamp(1.5rem,3vw,1.875rem)] font-semibold text-primary'>Fresh Fruits</p>
+                <span className='block text-gray-500 mt-[clamp(0.375rem,1vw,0.5rem)] tracking-wide text-[clamp(0.875rem,1.2vw,0.875rem)]'>100% Natural & Organic</span>
+                <span className='block text-gray-500 tracking-wide text-[clamp(0.875rem,1.2vw,0.875rem)]'>Fresh from farm</span>
 
-                <button className='flex items-center gap-2 mt-4 text-black hover:text-primary transition-colors'>
+                <button className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] mt-[clamp(0.75rem,2vw,1rem)] text-black hover:text-primary transition-colors text-[clamp(0.875rem,1.5vw,1rem)]'>
                     Shop Now
-                    <ArrowRight size={20} />
+                    <ArrowRight className='w-[clamp(18px,3vw,20px)] h-[clamp(18px,3vw,20px)]' />
                 </button>
             </div>
         </div>
@@ -102,8 +102,8 @@ const RightSideImage2 = () => {
 const Hero = () => {
     return (
         <div className='w-full'>
-            <div className='max-w-7xl mx-auto py-4'>
-                <div className='grid grid-cols-1 px-4 md:grid-cols-1 lg:grid-cols-3 gap-4 md:px-6 lg:px-0'>
+            <div className='w-full max-w-[min(calc(100%-1rem),83rem)] mx-auto py-[clamp(0.75rem,2vw,1rem)]'>
+                <div className='grid grid-cols-1 px-[clamp(1rem,1vw,1.5rem)] md:grid-cols-1 lg:grid-cols-3 gap-[clamp(0.75rem,2vw,1rem)]'>
 
                     <div className='lg:col-span-2 h-[30vh] md:h-[50vh] lg:h-[65vh]'>
                         <LeftSideImage />
