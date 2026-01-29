@@ -126,7 +126,7 @@ const Divider = memo(() => (
 const Header = () => {
     return (
         <header className='w-full py-[clamp(0.75rem,2vw,1rem)]'>
-            <div className='w-full max-w-[min(calc(100%-2rem),80rem)] mx-auto px-[clamp(1rem,3vw,1.5rem)] flex gap-[clamp(0.5rem,2vw,1rem)] items-center justify-between'>
+            <div className='w-full max-w-[min(calc(100%-2rem),84rem)] mx-auto px-[clamp(1rem,3vw,1.5rem)] flex gap-[clamp(0.5rem,2vw,1rem)] items-center justify-between'>
                 <div className='flex md:hidden items-center justify-between w-full gap-[clamp(0.5rem,2vw,1rem)]'>
                     <HamburgerMenu />
                     <Logo />

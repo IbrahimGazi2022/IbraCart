@@ -32,16 +32,16 @@ interface ProductCardProps {
 // --- ALL CONSTANTS HERE ---
 const Categories: Category[] = [
     {
+        name: "Dairy Products",
+        src: "../img/newProducts/3.png"
+    },
+    {
         name: "Biscuits & Snacks",
         src: "../img/newProducts/1.png"
     },
     {
         name: "Beverages",
         src: "../img/newProducts/2.png"
-    },
-    {
-        name: "Dairy Products",
-        src: "../img/newProducts/3.png"
     },
     {
         name: "Frozen Foods",
@@ -403,7 +403,7 @@ const ShopByCategories = () => {
 
                 {/* Products Grid */}
                 <div className='mt-4'>
-                    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-5'>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-5'>
                         {filteredProducts.slice(0, 12).map((prod, i) => (
                             <ProductCard key={i} product={prod} />
                         ))}

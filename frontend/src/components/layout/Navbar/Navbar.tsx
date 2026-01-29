@@ -2,7 +2,6 @@ import { motion, Variants } from 'framer-motion';
 import { useState } from 'react';
 import { ChevronRight, CircleStar } from 'lucide-react';
 import MainMenu from './MainMenu';
-import HamburgerMenu from './HamburgerMenu';
 
 // --- TYPES ---
 interface MenuItem {
@@ -118,27 +117,27 @@ const LeftSideButton = () => {
                 setHoveredItem(null);
             }}
             className='relative flex items-center cursor-pointer'>
-            <h1 className='pl-6 pr-12 py-3 bg-primary text-white font-bold tracking-wider rounded-md flex items-center gap-6'>
-                <div className='flex flex-col gap-1'>
+            <h1 className='pl-[clamp(1rem,3vw,1.5rem)] pr-[clamp(2rem,5vw,3rem)] py-[clamp(0.5rem,2vw,0.75rem)] bg-primary text-white font-bold tracking-wider rounded-md flex items-center gap-[clamp(1rem,3vw,1.5rem)] text-[clamp(0.875rem,1.5vw,1rem)] whitespace-nowrap'>
+                <div className='flex flex-col gap-[clamp(0.2rem,0.5vw,0.25rem)]'>
                     <motion.div
                         animate={waveMotion1.animate}
                         transition={waveMotion1.transition}
-                        className='w-6 h-0.5 bg-white'
+                        className='w-[clamp(20px,4vw,24px)] h-0.5 bg-white'
                     />
                     <motion.div
                         animate={waveMotion2.animate}
                         transition={waveMotion2.transition}
-                        className='w-4 h-0.5 bg-white'
+                        className='w-[clamp(16px,3vw,20px)] h-0.5 bg-white'
                     />
                     <motion.div
                         animate={waveMotion3.animate}
                         transition={waveMotion3.transition}
-                        className='w-6 h-0.5 bg-white'
+                        className='w-[clamp(20px,4vw,24px)] h-0.5 bg-white'
                     />
                     <motion.div
                         animate={waveMotion4.animate}
                         transition={waveMotion4.transition}
-                        className='w-5 h-0.5 bg-white'
+                        className='w-[clamp(18px,3.5vw,22px)] h-0.5 bg-white'
                     />
                 </div>
                 All Categories
@@ -148,12 +147,12 @@ const LeftSideButton = () => {
                     initial={dropdownAnimation.initial}
                     animate={dropdownAnimation.animate}
                     transition={dropdownAnimation.transition}
-                    className="absolute top-12 left-0 z-50 shadow-[0_8px_24px_rgba(149,157,165,0.2)]">
+                    className="absolute top-[clamp(2.5rem,8vw,3rem)] left-0 z-50 shadow-[0_8px_24px_rgba(149,157,165,0.2)]">
                     <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
-                        className='w-72 p-4 bg-white rounded-xl relative'>
+                        className='w-[clamp(16rem,40vw,18rem)] p-[clamp(0.75rem,2vw,1rem)] bg-white rounded-xl relative'>
                         {MenuItems.map((item) => (
                             <motion.div variants={itemVariants} key={item.name}>
                                 <h2
@@ -161,16 +160,16 @@ const LeftSideButton = () => {
                                     tabIndex={0}
                                     onMouseEnter={() => setHoveredItem(item.name)}
                                     onKeyDown={(e) => handleKeyDown(e, item.name)}
-                                    className="flex items-center justify-between gap-2 text-lg tracking-wider mb-4 cursor-pointer">
-                                    <motion.div className="flex items-center gap-2">
+                                    className="flex items-center justify-between gap-[clamp(0.25rem,1vw,0.5rem)] text-[clamp(0.875rem,1.5vw,1.125rem)] tracking-wider mb-[clamp(0.75rem,2vw,1rem)] cursor-pointer">
+                                    <motion.div className="flex items-center gap-[clamp(0.25rem,1vw,0.5rem)]">
                                         <img
                                             src={item.src}
                                             alt={item.name}
-                                            className='w-6 h-6'
+                                            className='w-[clamp(20px,4vw,24px)] h-[clamp(20px,4vw,24px)]'
                                         />
-                                        {item.name}
+                                        <span className='whitespace-nowrap'>{item.name}</span>
                                     </motion.div>
-                                    <span><ChevronRight className="w-5 h-5" /></span>
+                                    <span><ChevronRight className="w-[clamp(18px,3vw,20px)] h-[clamp(18px,3vw,20px)]" /></span>
                                 </h2>
                             </motion.div>
                         ))}
@@ -182,11 +181,11 @@ const LeftSideButton = () => {
                                 variants={itemVariants}
                                 initial="hidden"
                                 animate="visible"
-                                className="absolute left-72 top-0 p-4 w-52 bg-white text-lg tracking-wider shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-md">
+                                className="absolute left-[clamp(16rem,40vw,18rem)] top-0 p-[clamp(0.75rem,2vw,1rem)] w-[clamp(12rem,30vw,13rem)] bg-white text-[clamp(0.875rem,1.5vw,1.125rem)] tracking-wider shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-md">
                                 <ul>
                                     {MenuItems.find(item => item.name === hoveredItem)?.subItems.map((subItem) => (
-                                        <li key={subItem} className="flex items-center gap-2 mb-2 hover:text-primary cursor-pointer transition-colors">
-                                            <div className="w-1.5 h-1.5 bg-gray-500 rounded-full" />
+                                        <li key={subItem} className="flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] mb-[clamp(0.375rem,1vw,0.5rem)] hover:text-primary cursor-pointer transition-colors whitespace-nowrap">
+                                            <div className="w-[clamp(5px,1vw,6px)] h-[clamp(5px,1vw,6px)] bg-gray-500 rounded-full shrink-0" />
                                             {subItem}
                                         </li>
                                     ))}
@@ -202,10 +201,10 @@ const LeftSideButton = () => {
 
 const DealNowButton = () => {
     return (
-        <a
-            href="/#deals"
-            className='flex gap-2 bg-[#E7F5F3] py-2 px-4 sm:py-3.5 sm:px-6 rounded-lg text-primary text-sm sm:text-base font-bold hover:text-primary transition-colors tracking-wider'>
-            <CircleStar className='w-5 h-5 sm:w-6 sm:h-6' color='#0DA487' />
+
+        <a href="/#deals"
+            className='flex gap-[clamp(0.25rem,1vw,0.5rem)] bg-[#E7F5F3] py-[clamp(0.5rem,1.5vw,0.875rem)] px-[clamp(1rem,3vw,1.5rem)] rounded-lg text-primary text-[clamp(0.875rem,1.5vw,1rem)] font-bold hover:text-primary transition-colors tracking-wider whitespace-nowrap' >
+            <CircleStar className='w-[clamp(18px,4vw,24px)] h-[clamp(18px,4vw,24px)]' color='#0DA487' />
             Todays Best Deals
         </a>
     );
@@ -215,9 +214,9 @@ const DealNowButton = () => {
 const Navbar = () => {
     return (
         <nav className='w-full'>
-            <div className='max-w-7xl mx-auto py-0 md:py-3 px-4 md:px-6 lg:px-0'>
-                <div className='flex items-center gap-4'>
-                    <div className='hidden md:block'>
+            <div className='w-full max-w-[min(calc(100%-2rem),83rem)] mx-auto py-0 md:py-[clamp(0.5rem,1.5vw,0.75rem)] px-[clamp(1rem,1vw,1.5rem)]'>
+                <div className='flex items-center gap-[clamp(0.5rem,2vw,1.5rem)]'>
+                    <div className='hidden md:block shrink-0'>
                         <LeftSideButton />
                     </div>
 
@@ -227,12 +226,8 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    <div className='hidden md:block'>
+                    <div className='hidden md:block shrink-0'>
                         <DealNowButton />
-                    </div>
-
-                    <div className='hidden md:block lg:hidden'>
-                        <HamburgerMenu />
                     </div>
                 </div>
             </div>

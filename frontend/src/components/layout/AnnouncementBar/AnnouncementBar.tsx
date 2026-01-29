@@ -64,9 +64,9 @@ const useRotatingIndex = (length: number, interval: number): number => {
 
 // --- LOCATION COMPONENTS ---
 const LocationSection = memo(() => (
-    <div className="shrink-0 flex items-center gap-2">
-        <MapPin size={16} className="shrink-0" />
-        <span className="text-sm md:text-base font-medium tracking-wide">
+    <div className="shrink-0 flex items-center gap-[clamp(0.25rem,1vw,0.5rem)]">
+        <MapPin size={16} className="shrink-0 w-[clamp(14px,3vw,16px)] h-[clamp(14px,3vw,16px)]" />
+        <span className="text-[clamp(0.75rem,1.5vw,1rem)] font-medium tracking-wide whitespace-nowrap">
             {CONFIG.location}
         </span>
     </div>
@@ -79,7 +79,7 @@ const AnnouncementSlider = memo(() => {
     const currentIndex = useRotatingIndex(MESSAGES.length, CONFIG.slideInterval);
 
     return (
-        <div className="hidden md:flex flex-1 justify-center">
+        <div className="hidden md:flex flex-1 justify-center px-[clamp(1rem,3vw,2rem)]">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentIndex}
@@ -87,7 +87,7 @@ const AnnouncementSlider = memo(() => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ duration: CONFIG.animationDuration }}
-                    className="text-sm md:text-base font-medium tracking-wide capitalize"
+                    className="text-[clamp(0.75rem,1.5vw,1rem)] font-medium tracking-wide capitalize text-center"
                 >
                     {MESSAGES[currentIndex]}
                 </motion.div>
@@ -116,33 +116,33 @@ const LanguageDropdown = memo(() => {
         <div className="shrink-0 relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-2 px-4 py-2 hover:opacity-90 transition-opacity"
+                className="flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] px-[clamp(0.5rem,2vw,1rem)] py-[clamp(0.25rem,1vw,0.5rem)] hover:opacity-90 transition-opacity"
                 aria-label="Select language"
                 aria-expanded={isOpen}
             >
                 <img
                     src={selected.flag}
                     alt={selected.name}
-                    className="w-7 h-4.5 object-cover"
+                    className="w-[clamp(20px,5vw,28px)] h-auto object-cover"
                 />
-                <span className="text-sm md:text-base tracking-wider">{selected.name}</span>
-                <ChevronDown size={16} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                <span className="text-[clamp(0.75rem,1.5vw,1rem)] tracking-wider whitespace-nowrap">{selected.name}</span>
+                <ChevronDown size={16} className={`transition-transform duration-200 w-[clamp(14px,3vw,16px)] h-[clamp(14px,3vw,16px)] ${isOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {isOpen && (
-                <div className="absolute right-2 mt-2 w-32 bg-white text-black border border-gray-100 rounded-md shadow-lg overflow-hidden z-50">
+                <div className="absolute right-[clamp(0.25rem,1vw,0.5rem)] mt-[clamp(0.25rem,1vw,0.5rem)] min-w-[clamp(7rem,20vw,8rem)] bg-white text-black border border-gray-100 rounded-md shadow-lg overflow-hidden z-50">
                     {LANGUAGES.map((lang) => (
                         <button
                             key={lang.code}
                             onClick={() => handleSelect(lang)}
-                            className={`w-full flex items-center gap-2 px-2 py-2 hover:bg-gray-100 transition-colors ${selected.code === lang.code ? 'bg-gray-100' : ''}`}
+                            className={`w-full flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] px-[clamp(0.5rem,2vw,0.75rem)] py-[clamp(0.375rem,1.5vw,0.5rem)] hover:bg-gray-100 transition-colors ${selected.code === lang.code ? 'bg-gray-100' : ''}`}
                         >
                             <img
                                 src={lang.flag}
                                 alt={lang.name}
-                                className="w-7 h-4.5 object-cover"
+                                className="w-[clamp(20px,5vw,28px)] h-auto object-cover"
                             />
-                            <span className="text-sm">{lang.name}</span>
+                            <span className="text-[clamp(0.75rem,1.5vw,0.875rem)]">{lang.name}</span>
                             {selected.code === lang.code && (
                                 <span className="ml-auto text-secondary">✓</span>
                             )}
@@ -159,7 +159,7 @@ LanguageDropdown.displayName = 'LanguageDropdown';
 const AnnouncementBar = () => {
     return (
         <section className="w-full bg-primary">
-            <div className="max-w-7xl mx-auto py-0.5 pl-2 text-white flex justify-between items-center">
+            <div className="w-full max-w-[min(100%-1rem,90rem)] mx-auto py-[clamp(0.125rem,0.4vw,0.125rem)] px-[clamp(0.5rem,2vw,1rem)] text-white flex justify-between items-center">
                 <LocationSection />
                 <AnnouncementSlider />
                 <LanguageDropdown />

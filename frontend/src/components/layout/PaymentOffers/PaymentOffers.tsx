@@ -65,18 +65,18 @@ const cardVariants: Variants = {
 
 const PaymentOffers = () => {
     return (
-        <section className='w-full py-6 bg-white'>
-            <div className='max-w-7xl mx-auto px-4 md:px-6 lg:px-0'>
+        <section className='w-full py-[clamp(1rem,3vw,1.5rem)] bg-white'>
+            <div className='w-full max-w-[min(calc(100%-2rem),83rem)] mx-auto px-[clamp(1rem,3vw,1.5rem)]'>
 
                 {/* --- SECTION HEADER --- */}
-                <div className='mb-6'>
-                    <div className='flex items-center gap-2 mb-2'>
-                        <div className='h-1 w-10 bg-secondary rounded-full' />
-                        <span className='text-secondary font-bold text-sm uppercase tracking-widest'>
+                <div className='mb-[clamp(1rem,3vw,1.5rem)]'>
+                    <div className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] mb-[clamp(0.375rem,1vw,0.5rem)]'>
+                        <div className='h-[clamp(3px,0.5vw,4px)] w-[clamp(2rem,5vw,2.5rem)] bg-secondary rounded-full' />
+                        <span className='text-secondary font-bold text-[clamp(0.75rem,1.2vw,0.875rem)] uppercase tracking-widest'>
                             Payment Partners
                         </span>
                     </div>
-                    <h2 className='text-3xl md:text-4xl font-black text-gray-900 tracking-tight'>
+                    <h2 className='text-[clamp(1.875rem,4vw,2.25rem)] font-black text-gray-900 tracking-tight'>
                         Bank & Wallet Offers
                     </h2>
                 </div>
@@ -87,33 +87,33 @@ const PaymentOffers = () => {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
-                    className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                    className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[clamp(1rem,3vw,1.5rem)]'
                 >
                     {OFFERS.map((item: Offer, index: number) => (
                         <motion.div
                             key={index}
                             variants={cardVariants}
                             whileHover="hover"
-                            className={`relative overflow-hidden group h-40 flex items-center justify-between px-6 md:px-8 rounded-2xl border ${item.borderColor} ${item.bgColor} transition-colors hover:bg-white`}
+                            className={`relative overflow-hidden group h-[clamp(8rem,25vw,10rem)] flex items-center justify-between px-[clamp(1rem,3vw,2rem)] rounded-2xl border ${item.borderColor} ${item.bgColor} transition-colors hover:bg-white`}
                         >
                             {/* Background Decorative Circle */}
                             <div className='absolute -right-8 -bottom-8 w-32 h-32 bg-white/40 rounded-full group-hover:scale-150 transition-transform duration-700' />
 
                             {/* --- CONTENT --- */}
                             <div className='relative z-10'>
-                                <p className='text-xs font-bold text-gray-500 uppercase tracking-widest mb-1'>
+                                <p className='text-[clamp(0.75rem,1.2vw,0.75rem)] font-bold text-gray-500 uppercase tracking-widest mb-[clamp(0.25rem,0.5vw,0.25rem)]'>
                                     {item.bankName}
                                 </p>
-                                <h3 className='text-2xl md:text-3xl font-black text-secondary leading-none mb-2'>
+                                <h3 className='text-[clamp(1.5rem,3vw,1.875rem)] font-black text-secondary leading-none mb-[clamp(0.375rem,1vw,0.5rem)]'>
                                     {item.discount}
                                 </h3>
-                                <p className='text-sm md:text-base font-medium text-gray-600'>
+                                <p className='text-[clamp(0.875rem,1.5vw,1rem)] font-medium text-gray-600'>
                                     {item.condition}
                                 </p>
 
                                 <button
                                     type="button"
-                                    className='mt-3 text-xs font-bold text-gray-800 underline underline-offset-4 hover:text-secondary transition-colors'
+                                    className='mt-[clamp(0.5rem,1.5vw,0.75rem)] text-[clamp(0.75rem,1.2vw,0.75rem)] font-bold text-gray-800 underline underline-offset-4 hover:text-secondary transition-colors'
                                     aria-label={`Terms and conditions for ${item.bankName} offer`}
                                 >
                                     T&C Apply
@@ -125,7 +125,7 @@ const PaymentOffers = () => {
                                 <img
                                     src={item.src}
                                     alt={`${item.bankName} logo`}
-                                    className='w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-sm group-hover:rotate-12 transition-transform duration-300'
+                                    className='w-[clamp(4rem,10vw,5rem)] h-[clamp(4rem,10vw,5rem)] object-contain drop-shadow-sm group-hover:rotate-12 transition-transform duration-300'
                                 />
                             </div>
                         </motion.div>

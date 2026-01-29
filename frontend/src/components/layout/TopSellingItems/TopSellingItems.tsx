@@ -103,77 +103,83 @@ const cardVariants: Variants = {
 
 const TopSellingItems = () => {
     return (
-        <section className='w-full bg-white py-4'>
-            <div className='max-w-7xl mx-auto px-4 md:px-6 lg:px-0'>
+        <section className='w-full py-[clamp(1rem,3vw,1.5rem)] bg-white'>
+            <div className='w-full max-w-[min(calc(100%-2rem),84rem)] mx-auto px-[clamp(1rem,3vw,1.5rem)]'>
 
-                {/* Section Header */}
-                <div className='flex flex-col md:flex-row items-start md:items-end justify-between mb-6 gap-4'>
+                {/* --- TOP SELLING ITEMS HEADER --- */}
+                <div className='flex flex-col md:flex-row items-start md:items-end justify-between mb-[clamp(1rem,3vw,2rem)] gap-[clamp(1rem,2vw,1.5rem)]'>
                     <div>
-                        <div className='flex items-center gap-2 mb-2'>
-                            <div className='h-1 w-10 bg-primary rounded-full' />
-                            <span className='text-primary font-bold text-sm uppercase tracking-widest'>Best Sellers</span>
+                        <div className='flex items-center gap-[clamp(0.5rem,1.5vw,0.75rem)] mb-[clamp(0.5rem,1vw,0.75rem)]'>
+                            <div className='h-[clamp(0.25rem,0.5vw,0.375rem)] w-[clamp(2rem,5vw,2.5rem)] bg-primary rounded-full' />
+                            <span className='text-primary font-bold text-[clamp(0.75rem,1.5vw,0.875rem)] uppercase tracking-widest'>Best Sellers</span>
                         </div>
-                        <h2 className='text-3xl md:text-4xl font-black text-gray-900 tracking-tight'>Top Selling Items</h2>
+                        <h2 className='text-[clamp(1.5rem,4vw,2.5rem)] font-black text-gray-900 tracking-tight leading-tight'>Top Selling Items</h2>
                     </div>
-                    <button className='text-primary font-bold text-sm hover:underline flex items-center gap-1 group'>
+                    <button className='text-primary font-bold text-[clamp(0.75rem,1.5vw,0.875rem)] hover:underline flex items-center gap-[clamp(0.25rem,0.5vw,0.375rem)] group'>
                         View All Items
-                        <ArrowRight size={18} className='group-hover:translate-x-1 transition-transform' />
+                        <ArrowRight className='w-[clamp(1rem,2vw,1.125rem)] h-[clamp(1rem,2vw,1.125rem)] group-hover:translate-x-1 transition-transform' />
                     </button>
                 </div>
 
-                <div className='flex flex-col lg:flex-row gap-6'>
+                <div className='flex flex-col lg:flex-row gap-[clamp(1rem,3vw,1.5rem)]'>
 
                     {/* --- LEFT SIDE: PRODUCT GRID --- */}
-                    <div className='flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
+                    <div className='flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-[clamp(0.75rem,2vw,1.25rem)]'>
                         {products.map((product: Product, index: number) => (
                             <motion.div
                                 key={index}
                                 variants={cardVariants}
                                 whileHover="hover"
-                                className='group bg-white rounded-2xl p-4 border border-gray-100 shadow-sm hover:shadow-xl transition-all relative flex flex-col'
+                                className='group bg-white rounded-[clamp(0.75rem,2vw,1rem)] p-[clamp(0.75rem,2vw,1rem)] border border-gray-100 shadow-sm hover:shadow-xl transition-all relative flex flex-col'
                             >
-                                {/* Discount Tag */}
-                                <div className='absolute top-3 right-3 z-10'>
-                                    <span className='bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-sm'>
+                                {/* --- DISCOUNT TAG --- */}
+                                <div className='absolute top-[clamp(0.75rem,2vw,1rem)] right-[clamp(0.75rem,2vw,1rem)] z-10'>
+                                    <span className='bg-red-500 text-white text-[clamp(0.625rem,1.2vw,0.75rem)] font-bold px-[clamp(0.375rem,1vw,0.5rem)] py-[clamp(0.25rem,0.8vw,0.375rem)] rounded-[clamp(0.375rem,1vw,0.5rem)] shadow-sm'>
                                         {product.discount} OFF
                                     </span>
                                 </div>
 
-                                {/* Stock Status */}
-                                <div className='mb-2'>
-                                    <span className={`text-[10px] font-bold uppercase tracking-widest ${product.inStock ? 'text-green-500' : 'text-red-500'}`}>
+                                {/* --- PRODUCT STATUS --- */}
+                                <div className='mb-[clamp(0.5rem,1.5vw,0.75rem)]'>
+                                    <span className={`text-[clamp(0.625rem,1.2vw,0.75rem)] font-bold uppercase tracking-widest ${product.inStock ? 'text-green-500' : 'text-red-500'}`}>
                                         {product.inStock ? '● In Stock' : '● Out of Stock'}
                                     </span>
                                 </div>
 
-                                {/* Product Image */}
-                                <div className='h-40 w-full overflow-hidden flex items-center justify-center rounded-xl mb-4 bg-gray-50/50'>
+                                {/* --- PRODUCT IMAGE --- */}
+                                <div className='h-[clamp(8rem,20vw,12rem)] w-full overflow-hidden flex items-center justify-center rounded-[clamp(0.5rem,1.5vw,0.75rem)] mb-[clamp(0.75rem,2vw,1rem)] bg-gray-50/50'>
                                     <img
                                         src={product.img}
-                                        className='w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-500'
+                                        className='w-[clamp(6rem,15vw,9rem)] h-[clamp(6rem,15vw,9rem)] object-contain group-hover:scale-110 transition-transform duration-500'
                                         alt={product.name}
                                     />
                                 </div>
 
-                                {/* Content */}
+                                {/* --- PRODUCT CONTENT --- */}
                                 <div className='flex flex-col grow'>
-                                    <div className='flex gap-0.5 mb-2'>
+                                    {/* Star Rating */}
+                                    <div className='flex gap-[clamp(0.125rem,0.3vw,0.25rem)] mb-[clamp(0.375rem,1vw,0.5rem)]'>
                                         {[...Array(5)].map((_, i: number) => (
-                                            <Star key={i} size={12} className={i < product.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'} />
+                                            <Star
+                                                key={i}
+                                                className={`${i < product.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'} w-[clamp(0.625rem,1.5vw,0.875rem)] h-[clamp(0.625rem,1.5vw,0.875rem)]`}
+                                            />
                                         ))}
                                     </div>
 
-                                    <h3 className='text-sm font-bold text-gray-700 group-hover:text-primary transition-colors line-clamp-2 mb-2'>
+                                    {/* Product Name */}
+                                    <h3 className='text-[clamp(0.75rem,1.8vw,0.875rem)] font-bold text-gray-700 group-hover:text-primary transition-colors line-clamp-2 mb-[clamp(0.375rem,1vw,0.5rem)]'>
                                         {product.name}
                                     </h3>
 
+                                    {/* Price & Cart Button */}
                                     <div className='mt-auto flex items-center justify-between'>
                                         <div>
-                                            <p className='text-lg font-bold text-gray-900 leading-none'>{product.price}</p>
-                                            <p className='text-xs text-gray-400 line-through mt-1'>{product.originalPrice}</p>
+                                            <p className='text-[clamp(0.875rem,2.2vw,1.125rem)] font-bold text-gray-900 leading-none'>{product.price}</p>
+                                            <p className='text-[clamp(0.625rem,1.2vw,0.75rem)] text-gray-400 line-through mt-[clamp(0.125rem,0.5vw,0.25rem)]'>{product.originalPrice}</p>
                                         </div>
-                                        <button className='p-2 bg-gray-50 text-gray-400 hover:bg-primary hover:text-white rounded-xl transition-all'>
-                                            <ShoppingBag size={18} />
+                                        <button className='p-[clamp(0.375rem,1vw,0.5rem)] bg-gray-50 text-gray-400 hover:bg-primary hover:text-white rounded-[clamp(0.5rem,1.5vw,0.75rem)] transition-all'>
+                                            <ShoppingBag className='w-[clamp(0.875rem,2vw,1.125rem)] h-[clamp(0.875rem,2vw,1.125rem)]' />
                                         </button>
                                     </div>
                                 </div>
@@ -182,26 +188,25 @@ const TopSellingItems = () => {
                     </div>
 
                     {/* --- RIGHT SIDE: FEATURED BANNER --- */}
-                    <div className='w-full lg:w-72 relative rounded-3xl overflow-hidden group min-h-400px'>
+                    <div className='w-full lg:w-[clamp(18rem,25vw,20rem)] relative rounded-[clamp(1rem,3vw,1.5rem)] overflow-hidden group min-h-[clamp(20rem,50vh,28rem)]'>
                         <img
                             src="/img/topSell/11.jpg"
                             className='absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700'
                             alt="Fresh Banner"
                         />
-                        {/* Gradient Overlay for Text Readability */}
                         <div className='absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent lg:bg-none'></div>
 
-                        <div className='relative h-full p-8 flex flex-col justify-start z-10'>
-                            <span className='text-primary font-bold tracking-widest uppercase text-sm mb-2'>Fresh & Natural</span>
-                            <h4 className='text-3xl font-black text-gray-800 leading-tight uppercase'>
+                        <div className='relative h-full p-[clamp(1.5rem,4vw,2rem)] flex flex-col justify-start z-10'>
+                            <span className='text-primary font-bold tracking-widest uppercase text-[clamp(0.75rem,1.5vw,0.875rem)] mb-[clamp(0.375rem,1vw,0.5rem)]'>Fresh & Natural</span>
+                            <h4 className='text-[clamp(1.5rem,4vw,2rem)] font-black text-gray-800 leading-tight uppercase'>
                                 Organic <br />
                                 <span className='text-primary'>Vegetables</span>
                             </h4>
-                            <p className='text-gray-600 mt-4 text-sm font-medium'>Get up to 30% Off on your first order</p>
+                            <p className='text-gray-600 mt-[clamp(0.75rem,2vw,1rem)] text-[clamp(0.75rem,1.5vw,0.875rem)] font-medium'>Get up to 30% Off on your first order</p>
 
-                            <button className='mt-auto lg:mt-8 flex items-center justify-center gap-2 bg-primary text-white py-4 px-6 rounded-2xl font-bold shadow-lg shadow-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all group/btn'>
+                            <button className='mt-auto lg:mt-[clamp(1.5rem,3vw,2rem)] flex items-center justify-center gap-[clamp(0.375rem,1vw,0.5rem)] bg-primary text-white py-[clamp(0.75rem,2vw,1rem)] px-[clamp(1rem,3vw,1.5rem)] rounded-[clamp(0.75rem,2vw,1rem)] font-bold text-[clamp(0.75rem,1.5vw,0.875rem)] shadow-lg shadow-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all group/btn'>
                                 Shop Now
-                                <ArrowRight className='w-5 h-5 group-hover/btn:translate-x-1 transition-transform' />
+                                <ArrowRight className='w-[clamp(0.875rem,2vw,1.125rem)] h-[clamp(0.875rem,2vw,1.125rem)] group-hover/btn:translate-x-1 transition-transform' />
                             </button>
                         </div>
                     </div>
