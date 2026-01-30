@@ -1,4 +1,4 @@
-import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems, ShopByCategories } from './components';
+import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems, ShopByCategories, Footer } from './components';
 
 const App = () => {
   return (
@@ -10,6 +10,7 @@ const App = () => {
       <TopSellingItems />
       <PaymentOffers />
       <ShopByCategories />
+      <Footer />
     </>
   );
 };
