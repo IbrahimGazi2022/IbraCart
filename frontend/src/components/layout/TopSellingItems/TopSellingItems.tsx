@@ -1,9 +1,11 @@
 import { motion, Variants, useInView } from 'framer-motion';
 import { ArrowRight, Star, ShoppingBag } from 'lucide-react';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // --- TYPE DEFINITIONS ---
 interface Product {
+    id: number;
     img: string;
     name: string;
     rating: number;
@@ -16,6 +18,7 @@ interface Product {
 // --- ALL CONSTANTS HERE ---
 const products: Product[] = [
     {
+        id: 1,
         img: '/img/newProducts/1.png',
         name: 'Fresh Organic Apple',
         rating: 4,
@@ -25,6 +28,7 @@ const products: Product[] = [
         inStock: true
     },
     {
+        id: 2,
         img: '/img/newProducts/2.png',
         name: 'Fresh Banana Pack',
         rating: 5,
@@ -34,6 +38,7 @@ const products: Product[] = [
         inStock: true
     },
     {
+        id: 3,
         img: '/img/newProducts/3.png',
         name: 'Organic Tomatoes',
         rating: 3,
@@ -43,6 +48,7 @@ const products: Product[] = [
         inStock: true
     },
     {
+        id: 4,
         img: '/img/newProducts/6.png',
         name: 'Fresh Orange Juice',
         rating: 3,
@@ -52,6 +58,7 @@ const products: Product[] = [
         inStock: true
     },
     {
+        id: 4,
         img: '/img/newProducts/7.png',
         name: 'Organic Carrots',
         rating: 4,
@@ -61,6 +68,7 @@ const products: Product[] = [
         inStock: true
     },
     {
+        id: 5,
         img: '/img/newProducts/8.png',
         name: 'Fresh Green Grapes',
         rating: 5,
@@ -70,6 +78,7 @@ const products: Product[] = [
         inStock: true
     },
     {
+        id: 6,
         img: '/img/newProducts/9.png',
         name: 'Organic Spinach',
         rating: 4,
@@ -79,6 +88,7 @@ const products: Product[] = [
         inStock: true
     },
     {
+        id: 7,
         img: '/img/newProducts/10.png',
         name: 'Chicken Breast',
         rating: 5,
@@ -304,6 +314,8 @@ const TopSellingItems = () => {
     const isGridInView = useInView(gridRef, { once: true, amount: 0.1 });
     const isBannerInView = useInView(bannerRef, { once: true, amount: 0.3 });
 
+    const navigate = useNavigate();
+
     return (
         <section className='w-full py-[clamp(1rem,3vw,1.5rem)] bg-white'>
             <div className='w-full max-w-[min(calc(100%-2rem),84rem)] mx-auto px-[clamp(1rem,3vw,1.5rem)]'>
@@ -356,9 +368,13 @@ const TopSellingItems = () => {
                         {products.map((product: Product, index: number) => (
                             <motion.div
                                 key={index}
+                                onClick={() => {
+                                    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+                                    navigate(`/product/${product.id}`);
+                                }}
                                 variants={cardVariants}
                                 whileHover="hover"
-                                className='group bg-white rounded-[clamp(0.75rem,2vw,1rem)] p-[clamp(0.75rem,2vw,1rem)] border border-gray-100 shadow-sm transition-all relative flex flex-col'
+                                className='group bg-white rounded-[clamp(0.75rem,2vw,1rem)] p-[clamp(0.75rem,2vw,1rem)] border border-gray-100 shadow-sm transition-all relative flex flex-col cursor-pointer'
                             >
                                 {/* --- DISCOUNT TAG --- */}
                                 <motion.div

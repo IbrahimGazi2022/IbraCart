@@ -351,7 +351,7 @@ const Header = () => {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className='w-full py-0 md:py-[clamp(0.75rem,2vw,1rem)] sticky top-0 bg-white/95 backdrop-blur-sm z-50 shadow-sm'
+            className='w-full py-2 md:py-[clamp(0.75rem,2vw,1rem)] sticky top-0 bg-white/95 backdrop-blur-sm z-50 shadow-sm'
         >
             <motion.div
                 variants={headerContainerVariants}
