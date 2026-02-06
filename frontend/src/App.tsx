@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems, ShopByCategories, Footer, SingleProduct } from './components';
+import { AdminLayout, Dashboard, ProductsList, AddProduct, Categories } from './components/admin.index';
 import { useEffect } from 'react';
 
 const HomePage = () => {
@@ -21,19 +22,35 @@ const HomePage = () => {
   );
 };
 
-const App = () => {
+// --- PUBLIC LAYOUT ---
+const PublicLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Router>
+    <>
       <AnnouncementBar />
       <Header />
       <Navbar />
-
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/product/:id" element={<SingleProduct />} />
-      </Routes>
-
+      {children}
       <Footer />
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        {/* --- PUBLIC ROUTES --- */}
+        <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
+        <Route path="/product/:id" element={<PublicLayout><SingleProduct /></PublicLayout>} />
+
+        {/* --- ADMIN ROUTES --- */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="products" element={<ProductsList />} />
+          <Route path="products/add" element={<AddProduct />} />
+          <Route path="categories" element={<Categories />} />
+        </Route>
+      </Routes>
     </Router>
   );
 };
