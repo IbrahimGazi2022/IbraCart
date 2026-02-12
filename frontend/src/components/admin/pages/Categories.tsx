@@ -80,8 +80,8 @@ const Categories = () => {
             {/* --- PAGE HEADER --- */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-black text-gray-900 dark:text-white">Categories</h1>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">Manage product categories</p>
+                    <h1 className="text-3xl font-black text-gray-900">Categories</h1>
+                    <p className="text-gray-500 mt-1">Manage product categories</p>
                 </div>
                 <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -104,7 +104,7 @@ const Categories = () => {
                         key={category.id}
                         variants={itemVariants}
                         whileHover={{ y: -5 }}
-                        className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all">
+                        className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all">
                         <div className="flex items-start justify-between mb-4">
                             <div className={`${category.color} w-16 h-16 rounded-xl flex items-center justify-center text-3xl`}>
                                 {category.icon}
@@ -114,20 +114,20 @@ const Categories = () => {
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
                                     onClick={() => handleEdit(category)}
-                                    className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition">
+                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
                                     <Edit className="w-4 h-4" />
                                 </motion.button>
                                 <motion.button
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
                                     onClick={() => handleDelete(category.id, category.name)}
-                                    className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition">
+                                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
                                     <Trash2 className="w-4 h-4" />
                                 </motion.button>
                             </div>
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{category.name}</h3>
-                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">{category.name}</h3>
+                        <div className="flex items-center gap-2 text-gray-600">
                             <Package className="w-4 h-4" />
                             <span className="text-sm">{category.products} Products</span>
                         </div>
@@ -141,15 +141,15 @@ const Categories = () => {
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                        className="bg-white rounded-xl p-6 w-full max-w-md">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">
                             {editingCategory ? 'Edit Category' : 'Add New Category'}
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
 
                             {/* --- CATEGORY NAME --- */}
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Category Name *
                                 </label>
                                 <input
@@ -158,13 +158,13 @@ const Categories = () => {
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     required
                                     placeholder="e.g., Fruits"
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                                 />
                             </div>
 
                             {/* --- ICON --- */}
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Icon (Emoji) *
                                 </label>
                                 <input
@@ -174,7 +174,7 @@ const Categories = () => {
                                     required
                                     placeholder="🍎"
                                     maxLength={2}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition text-2xl text-center"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition text-2xl text-center"
                                 />
                             </div>
 
@@ -192,7 +192,7 @@ const Categories = () => {
                                     whileTap={{ scale: 0.98 }}
                                     type="button"
                                     onClick={() => setShowModal(false)}
-                                    className="px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                    className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition">
                                     Cancel
                                 </motion.button>
                             </div>

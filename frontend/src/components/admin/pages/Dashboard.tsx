@@ -69,8 +69,8 @@ const Dashboard = () => {
 
             {/* --- PAGE HEADER --- */}
             <div>
-                <h1 className="text-3xl font-black text-gray-900 dark:text-white">Dashboard</h1>
-                <p className="text-gray-500 dark:text-gray-400 mt-1">Welcome back, Admin!</p>
+                <h1 className="text-3xl font-black text-gray-900">Dashboard</h1>
+                <p className="text-gray-500 mt-1">Welcome back, Admin!</p>
             </div>
 
             {/* --- STATS GRID --- */}
@@ -84,11 +84,11 @@ const Dashboard = () => {
                         key={index}
                         variants={itemVariants}
                         whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                        className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all">
+                        className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{stat.label}</p>
-                                <h3 className="text-3xl font-bold text-gray-900 dark:text-white mt-2">{stat.value}</h3>
+                                <p className="text-sm text-gray-500 font-medium">{stat.label}</p>
+                                <h3 className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</h3>
                                 <div className="flex items-center gap-1 mt-2">
                                     {stat.trending === 'up' ? (
                                         <TrendingUp className="w-4 h-4 text-green-500" />
@@ -98,7 +98,7 @@ const Dashboard = () => {
                                     <span className={`text-sm font-semibold ${stat.trending === 'up' ? 'text-green-500' : 'text-red-500'}`}>
                                         {stat.change}
                                     </span>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">vs last month</span>
+                                    <span className="text-xs text-gray-500 ml-1">vs last month</span>
                                 </div>
                             </div>
                             <div className={`${stat.bgColor} w-14 h-14 rounded-lg flex items-center justify-center`}>
@@ -114,32 +114,32 @@ const Dashboard = () => {
                 variants={itemVariants}
                 initial="hidden"
                 animate="visible"
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">Recent Orders</h2>
+                className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-gray-100">
+                    <h2 className="text-xl font-bold text-gray-900">Recent Orders</h2>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full">
-                        <thead className="bg-gray-50 dark:bg-gray-700/50">
+                        <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Order ID</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Customer</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Product</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Amount</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Order ID</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Customer</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Product</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Amount</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                        <tbody className="divide-y divide-gray-100">
                             {recentOrders.map((order, index) => (
-                                <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{order.id}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{order.customer}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{order.product}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">{order.amount}</td>
+                                <tr key={index} className="hover:bg-gray-50 transition">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{order.id}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{order.customer}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{order.product}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{order.amount}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${order.status === 'Completed' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                                                order.status === 'Pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                                                    'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${order.status === 'Completed' ? 'bg-green-100 text-green-700' :
+                                            order.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
+                                                'bg-blue-100 text-blue-700'
                                             }`}>
                                             {order.status}
                                         </span>

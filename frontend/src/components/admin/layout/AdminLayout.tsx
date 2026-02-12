@@ -7,7 +7,7 @@ const AdminLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen bg-gray-50">
 
             {/* --- MOBILE SIDEBAR OVERLAY --- */}
             {sidebarOpen && (
@@ -30,7 +30,7 @@ const AdminLayout = () => {
                 <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
 
                 {/* --- PAGE CONTENT --- */}
-                <main className="p-6">
+                <main className="p-6 bg-gray-50 min-h-screen">
                     <Outlet />
                 </main>
             </div>

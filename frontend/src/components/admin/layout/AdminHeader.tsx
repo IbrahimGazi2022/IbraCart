@@ -25,7 +25,7 @@ const AdminHeader = ({ onMenuClick }: AdminHeaderProps) => {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-30">
+    <header className="bg-white border-b border-gray-100 sticky top-0 z-30">
       <div className="flex items-center justify-between px-6 py-4">
 
         {/* --- LEFT --- */}
@@ -38,7 +38,7 @@ const AdminHeader = ({ onMenuClick }: AdminHeaderProps) => {
           </button>
 
           {/* --- SEARCH --- */}
-          <div className="hidden md:flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-lg px-4 py-2 max-w-md w-full">
+          <div className="hidden md:flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-2 max-w-md w-full">
             <Search className="w-5 h-5 text-gray-400" />
             <input
               type="text"
@@ -52,19 +52,19 @@ const AdminHeader = ({ onMenuClick }: AdminHeaderProps) => {
         <div className="flex items-center gap-4">
 
           {/* --- SEARCH ICON ON MOBILE --- */}
-          <button className="md:hidden text-gray-600 dark:text-gray-300 hover:text-primary">
+          <button className="md:hidden text-gray-600 hover:text-primary">
             <Search className="w-6 h-6" />
           </button>
 
           {/* --- DARK MODE BUTTON --- */}
           <button
             onClick={toggleDarkMode}
-            className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
             {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
 
           {/* --- NOTIFICATIONS --- */}
-          <button className="relative p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          <button className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
             <Bell className="w-5 h-5" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
@@ -72,7 +72,7 @@ const AdminHeader = ({ onMenuClick }: AdminHeaderProps) => {
           {/* --- LOGOUT BUTTON --- */}
           <button
             onClick={handleLogout}
-            className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition"
+            className="p-2 rounded-lg text-gray-600 hover:bg-red-100 hover:text-red-600 transition"
             title="Logout">
             <LogOut className="w-5 h-5" />
           </button>

@@ -59,12 +59,12 @@ const AddProduct = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate('/admin/products')}
-                    className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition">
+                    className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">
                     <ArrowLeft className="w-5 h-5" />
                 </motion.button>
                 <div>
-                    <h1 className="text-3xl font-black text-gray-900 dark:text-white">Add New Product</h1>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">Fill in the details below</p>
+                    <h1 className="text-3xl font-black text-gray-900">Add New Product</h1>
+                    <p className="text-gray-500 mt-1">Fill in the details below</p>
                 </div>
             </div>
 
@@ -74,17 +74,17 @@ const AddProduct = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 onSubmit={handleSubmit}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 space-y-6">
+                className="bg-white rounded-xl shadow-sm p-6 space-y-6">
 
                 {/* --- IMAGE UPLOAD --- */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Product Image
                     </label>
                     <div className="flex items-start gap-4">
                         {imagePreview ? (
                             <div className="relative">
-                                <img src={imagePreview} alt="Preview" className="w-32 h-32 object-contain rounded-lg bg-gray-50 dark:bg-gray-700 p-2" />
+                                <img src={imagePreview} alt="Preview" className="w-32 h-32 object-contain rounded-lg bg-gray-50 p-2" />
                                 <button
                                     type="button"
                                     onClick={removeImage}
@@ -93,9 +93,9 @@ const AddProduct = () => {
                                 </button>
                             </div>
                         ) : (
-                            <label className="w-32 h-32 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-primary transition">
+                            <label className="w-32 h-32 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary transition">
                                 <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                                <span className="text-xs text-gray-500 dark:text-gray-400">Upload Image</span>
+                                <span className="text-xs text-gray-500">Upload Image</span>
                                 <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
                             </label>
                         )}
@@ -104,7 +104,7 @@ const AddProduct = () => {
 
                 {/* --- PRODUCT NAME --- */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Product Name *
                     </label>
                     <input
@@ -114,13 +114,13 @@ const AddProduct = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="e.g., Fresh Organic Apple"
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                     />
                 </div>
 
                 {/* --- CATEGORY --- */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Category *
                     </label>
                     <select
@@ -128,7 +128,7 @@ const AddProduct = () => {
                         value={formData.category}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition">
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition">
                         <option value="">Select Category</option>
                         {categories.map((cat, index) => (
                             <option key={index} value={cat}>{cat}</option>
@@ -139,7 +139,7 @@ const AddProduct = () => {
                 {/* --- PRICE & ORIGINAL PRICE --- */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Price *
                         </label>
                         <input
@@ -149,11 +149,11 @@ const AddProduct = () => {
                             onChange={handleInputChange}
                             required
                             placeholder="$4.99"
-                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Original Price
                         </label>
                         <input
@@ -162,7 +162,7 @@ const AddProduct = () => {
                             value={formData.originalPrice}
                             onChange={handleInputChange}
                             placeholder="$6.99"
-                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                         />
                     </div>
                 </div>
@@ -170,7 +170,7 @@ const AddProduct = () => {
                 {/* --- STOCK & WEIGHT --- */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Stock Quantity *
                         </label>
                         <input
@@ -180,11 +180,11 @@ const AddProduct = () => {
                             onChange={handleInputChange}
                             required
                             placeholder="50"
-                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Weight
                         </label>
                         <input
@@ -193,14 +193,14 @@ const AddProduct = () => {
                             value={formData.weight}
                             onChange={handleInputChange}
                             placeholder="1 kg"
-                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                         />
                     </div>
                 </div>
 
                 {/* --- DESCRIPTION --- */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Description
                     </label>
                     <textarea
@@ -209,7 +209,7 @@ const AddProduct = () => {
                         onChange={handleInputChange}
                         rows={4}
                         placeholder="Product description..."
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition resize-none"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition resize-none"
                     />
                 </div>
 
@@ -222,7 +222,7 @@ const AddProduct = () => {
                             onChange={(e) => setFormData(prev => ({ ...prev, inStock: e.target.checked }))}
                             className="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary"
                         />
-                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Product is in stock</span>
+                        <span className="text-sm font-semibold text-gray-700">Product is in stock</span>
                     </label>
                 </div>
 
@@ -240,7 +240,7 @@ const AddProduct = () => {
                         whileTap={{ scale: 0.98 }}
                         type="button"
                         onClick={() => navigate('/admin/products')}
-                        className="px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                        className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition">
                         Cancel
                     </motion.button>
                 </div>

@@ -82,6 +82,17 @@
     - App.tsx
     - assets
     - components
+      - admin
+        - layout
+          - AdminHeader.tsx
+          - AdminLayout.tsx
+          - AdminSidebar.tsx
+        - pages
+          - AddProduct.tsx
+          - Categories.tsx
+          - Dashboard.tsx
+          - ProductsList.tsx
+      - admin.index.ts
       - index.ts
       - layout
         - AnnouncementBar
