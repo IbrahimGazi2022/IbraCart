@@ -2,13 +2,15 @@ import { memo, useCallback, useState, useRef } from 'react';
 import { Search, PhoneCall, Heart, ShoppingCart, User } from 'lucide-react';
 import HamburgerMenu from '../Navbar/HamburgerMenu';
 import { motion, Variants, useInView } from 'framer-motion';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { useNavigate } from 'react-router-dom';
 
 // --- ALL CONSTANTS HERE ---
 const CONFIG = {
     logo: '../img/logo/logo.png',
     contactNumber: "+880 1732 570 530",
     delivaryTime: "24/7 Delivery",
-    cartCount: 3,
     wishlistCount: 5
 };
 
@@ -279,32 +281,44 @@ const WishlistIcon = memo(() => (
 WishlistIcon.displayName = 'WishlistIcon';
 
 // --- CART ICON ---
-const CartIcon = memo(() => (
-    <motion.button
-        variants={iconButtonVariants}
-        whileHover="hover"
-        whileTap="tap"
-        className="relative p-[clamp(0.25rem,1vw,0.5rem)] rounded-full transition-colors shrink-0"
-        aria-label="Shopping Cart"
-    >
-        <motion.div
-            whileHover={{ scale: 1.2, y: [0, -3, 0] }}
-            transition={{ duration: 0.4 }}
+const CartIcon = memo(() => {
+    const navigate = useNavigate();
+
+    {/* --- REDUX CART COUNT --- */ }
+    const cartCount = useSelector((state: RootState) =>
+        state.cart.items.reduce((total, item) => total + item.quantity, 0)
+    );
+
+    return (
+        <motion.button
+            variants={iconButtonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            onClick={() => navigate('/cart')}
+            className="relative p-[clamp(0.25rem,1vw,0.5rem)] rounded-full transition-colors shrink-0"
+            aria-label="Shopping Cart"
         >
-            <ShoppingCart className='w-[clamp(20px,4vw,24px)] h-[clamp(20px,4vw,24px)]' />
-        </motion.div>
-        {CONFIG.cartCount > 0 && (
-            <motion.span
-                variants={badgeVariants}
-                initial="hidden"
-                animate={["visible", "pulse"]}
-                className="absolute -top-[clamp(0.125rem,0.5vw,0.25rem)] -right-[clamp(0.125rem,0.5vw,0.25rem)] bg-secondary text-white text-[clamp(0.625rem,1.2vw,0.75rem)] rounded-full w-[clamp(1rem,3vw,1.25rem)] h-[clamp(1rem,3vw,1.25rem)] flex items-center justify-center font-semibold"
+            <motion.div
+                whileHover={{ scale: 1.2, y: [0, -3, 0] }}
+                transition={{ duration: 0.4 }}
             >
-                {CONFIG.cartCount}
-            </motion.span>
-        )}
-    </motion.button>
-));
+                <ShoppingCart className='w-[clamp(20px,4vw,24px)] h-[clamp(20px,4vw,24px)]' />
+            </motion.div>
+
+            {/* --- CART BADGE --- */}
+            {cartCount > 0 && (
+                <motion.span
+                    variants={badgeVariants}
+                    initial="hidden"
+                    animate={["visible", "pulse"]}
+                    className="absolute -top-[clamp(0.125rem,0.5vw,0.25rem)] -right-[clamp(0.125rem,0.5vw,0.25rem)] bg-secondary text-white text-[clamp(0.625rem,1.2vw,0.75rem)] rounded-full w-[clamp(1rem,3vw,1.25rem)] h-[clamp(1rem,3vw,1.25rem)] flex items-center justify-center font-semibold"
+                >
+                    {cartCount}
+                </motion.span>
+            )}
+        </motion.button>
+    );
+});
 CartIcon.displayName = 'CartIcon';
 
 // --- USER ICON COMPONENT ---

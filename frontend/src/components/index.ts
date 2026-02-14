@@ -8,3 +8,4 @@ export { default as TopSellingItems } from "./layout/TopSellingItems/TopSellingI
 export { default as ShopByCategories } from "./layout/ShopByCategories/ShopByCategories";
 export { default as Footer } from "./layout/Footer/Footer";
 export { default as SingleProduct } from './layout/SingleProduct/SingleProduct';
+export { default as Cart } from '../components/Cart/Cart';

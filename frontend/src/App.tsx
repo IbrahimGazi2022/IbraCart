@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems, ShopByCategories, Footer, SingleProduct } from './components';
+import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems, ShopByCategories, Footer, SingleProduct, Cart } from './components';
 import { AdminLayout, Dashboard, ProductsList, AddProduct, Categories } from './components/admin.index';
 import { useEffect } from 'react';
 
@@ -42,6 +42,7 @@ const App = () => {
         {/* --- PUBLIC ROUTES --- */}
         <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
         <Route path="/product/:id" element={<PublicLayout><SingleProduct /></PublicLayout>} />
+        <Route path="/cart" element={<PublicLayout><Cart /></PublicLayout>} />
 
         {/* --- ADMIN ROUTES --- */}
         <Route path="/admin" element={<AdminLayout />}>

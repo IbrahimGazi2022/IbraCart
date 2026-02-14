@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Heart, Star, ArrowLeft, Minus, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../store/cartSlice';
 
 const allProducts = [
     {
@@ -114,8 +116,20 @@ const SingleProduct = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
-
+    const dispatch = useDispatch();
     const product = allProducts.find(p => p.id === Number(id));
+
+    // --- ADD TO CART HANDLER ---
+    const handleAddToCart = () => {
+        if (!product) return;
+        dispatch(addToCart({
+            id: product.id,
+            name: product.name,
+            price: parseFloat(product.price.replace('$', '')),
+            image: product.img,
+            quantity: quantity
+        }));
+    };
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -277,6 +291,7 @@ const SingleProduct = () => {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
+                                onClick={handleAddToCart}
                                 className="flex-1 bg-primary text-white py-4 px-6 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transition"
                             >
                                 <ShoppingCart className="w-6 h-6" />
