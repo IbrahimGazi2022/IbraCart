@@ -9,3 +9,4 @@ export { default as ShopByCategories } from "./layout/ShopByCategories/ShopByCat
 export { default as Footer } from "./layout/Footer/Footer";
 export { default as SingleProduct } from './layout/SingleProduct/SingleProduct';
 export { default as Cart } from '../components/Cart/Cart';
+export { default as Checkout } from '../components/Checkout/Checkout';

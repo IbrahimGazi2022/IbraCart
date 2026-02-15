@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { removeFromCart, increaseQuantity, decreaseQuantity, clearCart } from '../../store/cartSlice';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // --- CONSTANTS ---
 const DELIVERY_CHARGE = 50;
@@ -53,6 +54,7 @@ const EmptyCart = () => (
 // --- MAIN COMPONENT ---
 const Cart = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { items } = useSelector((state: RootState) => state.cart);
     const [couponInput, setCouponInput] = useState('');
     const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
@@ -261,6 +263,7 @@ const Cart = () => {
 
                             {/* --- CHECKOUT BUTTON --- */}
                             <motion.button
+                                onClick={() => navigate('/checkout')}
                                 whileHover={{ scale: 1.02, boxShadow: '0 10px 25px -5px rgba(13, 164, 135, 0.3)' }}
                                 whileTap={{ scale: 0.98 }}
                                 className='w-full bg-primary text-white py-[clamp(0.75rem,2vw,1rem)] rounded-lg font-bold text-[clamp(0.875rem,2vw,1rem)] mt-[clamp(1rem,3vw,1.5rem)] transition-colors'
