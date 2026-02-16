@@ -10,3 +10,4 @@ export { default as Footer } from "./layout/Footer/Footer";
 export { default as SingleProduct } from './layout/SingleProduct/SingleProduct';
 export { default as Cart } from '../components/Cart/Cart';
 export { default as Checkout } from '../components/Checkout/Checkout';
+export { default as Auth } from '../components/Auth/Auth';
