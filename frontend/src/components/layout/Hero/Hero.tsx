@@ -1,174 +1,97 @@
 import { ArrowRight } from 'lucide-react';
 import { motion, Variants, useInView } from 'framer-motion';
-import { useRef } from 'react';
-
-// --- ALL CONSTANTS HERE ---
-const Image = {
-    img1: '../img/hero/1.jpg',
-    img2: '../img/hero/2.jpg',
-    img3: '../img/hero/3.jpg',
-};
+import { useRef, useState, useEffect } from 'react';
+import { API_URL } from '../../../config/apiConfig';
 
 // --- ANIMATION VARIANTS ---
 
-// Main Hero Container
 const heroContainerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
-        transition: {
-            staggerChildren: 0.2,
-            delayChildren: 0.1
-        }
+        transition: { staggerChildren: 0.2, delayChildren: 0.1 }
     }
 };
 
-// Left Side Card
 const leftCardVariants: Variants = {
     hidden: { opacity: 0, x: -50, scale: 0.95 },
     visible: {
-        opacity: 1,
-        x: 0,
-        scale: 1,
-        transition: {
-            duration: 0.8,
-            ease: "easeOut"
-        }
+        opacity: 1, x: 0, scale: 1,
+        transition: { duration: 0.8, ease: "easeOut" }
     }
 };
 
-// Right Side Cards
 const rightCardVariants: Variants = {
     hidden: { opacity: 0, x: 50, scale: 0.95 },
     visible: (custom: number) => ({
-        opacity: 1,
-        x: 0,
-        scale: 1,
-        transition: {
-            duration: 0.8,
-            ease: "easeOut",
-            delay: custom * 0.2
-        }
+        opacity: 1, x: 0, scale: 1,
+        transition: { duration: 0.8, ease: "easeOut", delay: custom * 0.2 }
     })
 };
 
-// Content Animation
 const contentVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
-        transition: {
-            staggerChildren: 0.15,
-            delayChildren: 0.3
-        }
+        transition: { staggerChildren: 0.15, delayChildren: 0.3 }
     }
 };
 
 const textItemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.6,
-            ease: "easeOut"
-        }
-    }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-// Badge Animation
 const badgeVariants: Variants = {
     hidden: { scale: 0, rotate: -180 },
     visible: {
-        scale: 1,
-        rotate: 0,
-        transition: {
-            type: "spring",
-            stiffness: 260,
-            damping: 20,
-            delay: 0.5
-        }
+        scale: 1, rotate: 0,
+        transition: { type: "spring", stiffness: 260, damping: 20, delay: 0.5 }
     }
 };
 
-// Heading Animation
 const headingVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-            delayChildren: 0.2
-        }
+        transition: { staggerChildren: 0.1, delayChildren: 0.2 }
     }
 };
 
 const headingLineVariants: Variants = {
     hidden: { opacity: 0, x: -20 },
-    visible: {
-        opacity: 1,
-        x: 0,
-        transition: {
-            duration: 0.5,
-            ease: "easeOut"
-        }
-    }
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
-// Button Animation
 const buttonVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.6,
-            ease: "easeOut",
-            delay: 0.6
-        }
+        opacity: 1, y: 0,
+        transition: { duration: 0.6, ease: "easeOut", delay: 0.6 }
     },
     hover: {
         scale: 1.05,
         boxShadow: "0 10px 25px -5px rgba(239, 68, 68, 0.3)",
-        transition: {
-            type: "spring",
-            stiffness: 400,
-            damping: 10
-        }
+        transition: { type: "spring", stiffness: 400, damping: 10 }
     },
-    tap: {
-        scale: 0.95
-    }
+    tap: { scale: 0.95 }
 };
 
-// Discount Text Animation
 const discountVariants: Variants = {
     hidden: { opacity: 0, scale: 0.5 },
     visible: {
-        opacity: 1,
-        scale: 1,
-        transition: {
-            type: "spring",
-            stiffness: 200,
-            damping: 15,
-            delay: 0.3
-        }
+        opacity: 1, scale: 1,
+        transition: { type: "spring", stiffness: 200, damping: 15, delay: 0.3 }
     }
 };
 
-// Image Overlay Animation
 const overlayVariants: Variants = {
     hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            duration: 0.8
-        }
-    }
+    visible: { opacity: 1, transition: { duration: 0.8 } }
 };
 
 // --- LEFT SIDE IMAGE --- 
-const LeftSideImage = () => {
+const LeftSideImage = ({ banner }: { banner: any }) => {
     return (
         <motion.div
             variants={leftCardVariants}
@@ -178,14 +101,11 @@ const LeftSideImage = () => {
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 1.2, ease: "easeOut" }}
-                src={Image.img1}
+                src={banner?.imageUrl || '../img/hero/1.jpg'}
                 alt="Hero Image"
                 className='w-full h-full object-cover absolute rounded-md'
             />
-            <motion.div
-                variants={overlayVariants}
-                className='absolute inset-0 bg-black/10'
-            />
+            <motion.div variants={overlayVariants} className='absolute inset-0 bg-black/10' />
 
             <motion.div
                 variants={contentVariants}
@@ -197,21 +117,21 @@ const LeftSideImage = () => {
                     variants={textItemVariants}
                     className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] text-[clamp(0.875rem,1.5vw,1.125rem)] text-gray-600 tracking-wider'
                 >
-                    Exclusive Offer
+                    {banner?.badgeText}
                     <motion.span
                         variants={badgeVariants}
                         className='bg-secondary text-white px-[clamp(0.25rem,1.5vw,0.625rem)] py-[clamp(0.25rem,1vw,0.375rem)] font-bold rounded-full text-[clamp(0.75rem,1.2vw,0.875rem)]'
                     >
-                        30% Off
+                        {banner?.badgeDiscount}
                     </motion.span>
                 </motion.p>
                 <motion.h1
                     variants={headingVariants}
                     className='text-[clamp(1.125rem,5vw,3rem)] font-semibold uppercase mt-[clamp(0.75rem,2vw,1rem)] tracking-wide leading-tight'
                 >
-                    <motion.span variants={headingLineVariants} className='block'>Stay home</motion.span>
-                    <motion.span variants={headingLineVariants} className='block'>delivered your</motion.span>
-                    <motion.span variants={headingLineVariants} className='block text-primary font-extrabold'>Daily Needs</motion.span>
+                    <motion.span variants={headingLineVariants} className='block'>{banner?.headingLine1}</motion.span>
+                    <motion.span variants={headingLineVariants} className='block'>{banner?.headingLine2}</motion.span>
+                    <motion.span variants={headingLineVariants} className='block text-primary font-extrabold'>{banner?.headingLine3}</motion.span>
                 </motion.h1>
                 <motion.button
                     variants={buttonVariants}
@@ -219,7 +139,7 @@ const LeftSideImage = () => {
                     whileTap="tap"
                     className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] mt-[clamp(0.75rem,2vw,1rem)] bg-secondary text-white py-[clamp(0.5rem,1.5vw,0.75rem)] px-[clamp(0.5rem,3vw,1.25rem)] rounded-xl transition-colors cursor-pointer text-[clamp(0.875rem,1.5vw,1rem)]'
                 >
-                    Shop Now
+                    {banner?.buttonText}
                     <motion.div
                         animate={{ x: [0, 6, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -233,7 +153,7 @@ const LeftSideImage = () => {
 };
 
 // --- RIGHT SIDE IMAGE ONE --- 
-const RightSideImage1 = () => {
+const RightSideImage1 = ({ banner }: { banner: any }) => {
     return (
         <motion.div
             custom={0}
@@ -243,14 +163,11 @@ const RightSideImage1 = () => {
             <motion.img
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                src={Image.img2}
+                src={banner?.imageUrl || '../img/hero/2.jpg'}
                 alt="Hero Image"
                 className='w-full h-full absolute object-cover rounded-md'
             />
-            <motion.div
-                variants={overlayVariants}
-                className='absolute inset-0 bg-black/10'
-            />
+            <motion.div variants={overlayVariants} className='absolute inset-0 bg-black/10' />
 
             <motion.div
                 variants={contentVariants}
@@ -262,7 +179,7 @@ const RightSideImage1 = () => {
                     variants={discountVariants}
                     className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] text-secondary font-semibold text-[clamp(1.875rem,5vw,3rem)]'
                 >
-                    45%
+                    {banner?.discount}
                     <motion.span
                         variants={textItemVariants}
                         className='text-gray-500 text-[clamp(1.125rem,2vw,1.25rem)] mt-[clamp(0.75rem,2vw,1rem)] uppercase'
@@ -274,19 +191,19 @@ const RightSideImage1 = () => {
                     variants={textItemVariants}
                     className='mt-[clamp(0.375rem,1vw,0.5rem)] capitalize text-[clamp(1.5rem,3vw,1.875rem)] font-semibold text-primary'
                 >
-                    Nut Collection
+                    {banner?.title}
                 </motion.p>
                 <motion.span
                     variants={textItemVariants}
                     className='block text-gray-500 mt-[clamp(0.375rem,1vw,0.5rem)] tracking-wide text-[clamp(0.875rem,1.2vw,0.875rem)]'
                 >
-                    We deliver organic products
+                    {banner?.description1}
                 </motion.span>
                 <motion.span
                     variants={textItemVariants}
                     className='block text-gray-500 tracking-wide text-[clamp(0.875rem,1.2vw,0.875rem)]'
                 >
-                    vegetables & fruits
+                    {banner?.description2}
                 </motion.span>
 
                 <motion.button
@@ -295,7 +212,7 @@ const RightSideImage1 = () => {
                     whileTap={{ scale: 0.95 }}
                     className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] mt-[clamp(0.75rem,2vw,1rem)] text-black hover:text-primary transition-colors text-[clamp(0.875rem,1.5vw,1rem)] font-medium'
                 >
-                    Shop Now
+                    {banner?.buttonText}
                     <motion.div
                         animate={{ x: [0, 4, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -309,7 +226,7 @@ const RightSideImage1 = () => {
 };
 
 // --- RIGHT SIDE IMAGE TWO --- 
-const RightSideImage2 = () => {
+const RightSideImage2 = ({ banner }: { banner: any }) => {
     return (
         <motion.div
             custom={1}
@@ -319,14 +236,11 @@ const RightSideImage2 = () => {
             <motion.img
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                src={Image.img3}
+                src={banner?.imageUrl || '../img/hero/3.jpg'}
                 alt="Hero Image"
                 className='w-full h-full absolute object-cover rounded-md'
             />
-            <motion.div
-                variants={overlayVariants}
-                className='absolute inset-0 bg-black/10'
-            />
+            <motion.div variants={overlayVariants} className='absolute inset-0 bg-black/10' />
 
             <motion.div
                 variants={contentVariants}
@@ -338,7 +252,7 @@ const RightSideImage2 = () => {
                     variants={discountVariants}
                     className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] text-secondary font-semibold text-[clamp(2rem,5vw,3rem)]'
                 >
-                    25%
+                    {banner?.discount}
                     <motion.span
                         variants={textItemVariants}
                         className='text-gray-500 text-[clamp(1.125rem,2vw,1.25rem)] mt-[clamp(0.75rem,2vw,1rem)] uppercase'
@@ -350,19 +264,19 @@ const RightSideImage2 = () => {
                     variants={textItemVariants}
                     className='mt-[clamp(0.375rem,1vw,0.5rem)] capitalize text-[clamp(1.5rem,3vw,1.875rem)] font-semibold text-primary'
                 >
-                    Fresh Fruits
+                    {banner?.title}
                 </motion.p>
                 <motion.span
                     variants={textItemVariants}
                     className='block text-gray-500 mt-[clamp(0.375rem,1vw,0.5rem)] tracking-wide text-[clamp(0.875rem,1.2vw,0.875rem)]'
                 >
-                    100% Natural & Organic
+                    {banner?.description1}
                 </motion.span>
                 <motion.span
                     variants={textItemVariants}
                     className='block text-gray-500 tracking-wide text-[clamp(0.875rem,1.2vw,0.875rem)]'
                 >
-                    Fresh from farm
+                    {banner?.description2}
                 </motion.span>
 
                 <motion.button
@@ -371,7 +285,7 @@ const RightSideImage2 = () => {
                     whileTap={{ scale: 0.95 }}
                     className='flex items-center gap-[clamp(0.25rem,1vw,0.5rem)] mt-[clamp(0.75rem,2vw,1rem)] text-black hover:text-primary transition-colors text-[clamp(0.875rem,1.5vw,1rem)] font-medium'
                 >
-                    Shop Now
+                    {banner?.buttonText}
                     <motion.div
                         animate={{ x: [0, 4, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -384,9 +298,35 @@ const RightSideImage2 = () => {
     );
 };
 
+// --- HERO COMPONENT ---
 const Hero = () => {
     const heroRef = useRef(null);
     const isInView = useInView(heroRef, { once: true, amount: 0.2 });
+
+    const [mainBanner, setMainBanner] = useState<any>(null);
+    const [smallBanners, setSmallBanners] = useState<any[]>([]);
+
+    // --- FETCH HERO BANNERS ---
+    useEffect(() => {
+        const fetchBanners = async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/hero`);
+                const data = await response.json();
+
+                if (data.success && data.data.length > 0) {
+                    const main = data.data.find((b: any) => b.type === 'main');
+                    const smalls = data.data.filter((b: any) => b.type === 'small');
+
+                    if (main) setMainBanner(main);
+                    if (smalls.length > 0) setSmallBanners(smalls);
+                }
+            } catch (error) {
+                console.error('Fetch failed:', error);
+            }
+        };
+
+        fetchBanners();
+    }, []);
 
     return (
         <div className='w-full'>
@@ -399,16 +339,16 @@ const Hero = () => {
                     className='grid grid-cols-1 px-[clamp(1rem,3vw,1.5rem)] md:grid-cols-1 lg:grid-cols-3 gap-[clamp(0.75rem,2vw,1rem)]'
                 >
                     <div className='lg:col-span-2 h-[30vh] md:h-[50vh] lg:h-[65vh]'>
-                        <LeftSideImage />
+                        <LeftSideImage banner={mainBanner} />
                     </div>
 
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-[clamp(0.75rem,2vw,1rem)] h-[30vh] md:h-[45vh] lg:h-[65vh]'>
                         <div className='h-full'>
-                            <RightSideImage1 />
+                            <RightSideImage1 banner={smallBanners[0]} />
                         </div>
 
                         <div className='h-full'>
-                            <RightSideImage2 />
+                            <RightSideImage2 banner={smallBanners[1]} />
                         </div>
                     </div>
                 </motion.div>

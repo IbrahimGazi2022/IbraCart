@@ -33,21 +33,21 @@ export const saveHeroBanners = async (req: Request, res: Response) => {
     try {
         const { mainBanner, smallBanners } = req.body;
 
-        // Main banner save
-        await prisma.heroBanner.upsert({
-            where: { id: mainBanner.id || 0 },
-            update: mapBanner(mainBanner, 'main'),
-            create: mapBanner(mainBanner, 'main'),
-        });
+        await prisma.$transaction(async (tx) => {
+            // আগের সব delete
+            await tx.heroBanner.deleteMany();
 
-        // Small banners save
-        for (const banner of smallBanners) {
-            await prisma.heroBanner.upsert({
-                where: { id: banner.id || 0 },
-                update: mapBanner(banner, 'small'),
-                create: mapBanner(banner, 'small'),
+            // নতুন insert
+            await tx.heroBanner.create({
+                data: mapBanner(mainBanner, 'main'),
             });
-        }
+
+            for (const banner of smallBanners) {
+                await tx.heroBanner.create({
+                    data: mapBanner(banner, 'small'),
+                });
+            }
+        });
 
         res.status(200).json({ success: true, message: 'Hero banners saved' });
     } catch (error) {
