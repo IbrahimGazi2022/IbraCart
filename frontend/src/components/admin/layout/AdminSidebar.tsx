@@ -6,7 +6,8 @@ import {
     ShoppingCart,
     Users,
     Settings,
-    X
+    X,
+    LayoutTemplate
 } from 'lucide-react';
 
 interface AdminSidebarProps {
@@ -16,6 +17,7 @@ interface AdminSidebarProps {
 const AdminSidebar = ({ onClose }: AdminSidebarProps) => {
     const menuItems = [
         { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
+        { icon: LayoutTemplate, label: 'Hero Section', path: '/admin/hero' },
         { icon: Package, label: 'Products', path: '/admin/products' },
         { icon: FolderTree, label: 'Categories', path: '/admin/categories' },
         { icon: ShoppingCart, label: 'Orders', path: '/admin/orders' },

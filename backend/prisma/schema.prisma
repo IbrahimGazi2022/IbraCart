@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model HeroBanner {
+  id            Int      @id @default(autoincrement())
+  type          String
+  badgeText     String?
+  badgeDiscount String?
+  headingLine1  String?
+  headingLine2  String?
+  headingLine3  String?
+  buttonText    String?
+  discount      String?
+  title         String?
+  description1  String?
+  description2  String?
+  imageUrl      String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
