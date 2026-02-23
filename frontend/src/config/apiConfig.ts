@@ -2,4 +2,4 @@ const isDevelopment = import.meta.env.MODE === 'development';
 
 export const API_URL = isDevelopment
     ? 'http://localhost:5000'
-    : ''; // backend url
+    : 'https://ibra-cart-backend.vercel.app'; 
