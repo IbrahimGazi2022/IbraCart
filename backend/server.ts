@@ -3,6 +3,7 @@ import prisma from './DB/connectDB';
 import dotenv from 'dotenv';
 import express from 'express';
 import heroRoutes from './routes/heroRoutes';
+import productRoutes from './routes/productRoutes';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/hero', heroRoutes);
+app.use('/api/products', productRoutes);
 
 app.get("/", (req, res) => {
     res.json("Backend Running");

@@ -34,10 +34,7 @@ export const saveHeroBanners = async (req: Request, res: Response) => {
         const { mainBanner, smallBanners } = req.body;
 
         await prisma.$transaction(async (tx) => {
-            // আগের সব delete
             await tx.heroBanner.deleteMany();
-
-            // নতুন insert
             await tx.heroBanner.create({
                 data: mapBanner(mainBanner, 'main'),
             });
