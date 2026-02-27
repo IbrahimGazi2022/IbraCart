@@ -1,26 +1,37 @@
 import { motion } from 'framer-motion';
 import { Edit, Trash2, Plus, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { API_URL } from '../../../config/apiConfig';
 
 const ProductsList = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
+    const [product, setProduct] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const products = [
-        { id: 1, name: 'Fresh Organic Apple', category: 'Fruits', price: '$4.99', stock: 45, image: '/img/newProducts/1.png', status: 'In Stock' },
-        { id: 2, name: 'Fresh Banana Pack', category: 'Fruits', price: '$3.49', stock: 67, image: '/img/newProducts/2.png', status: 'In Stock' },
-        { id: 3, name: 'Organic Tomatoes', category: 'Vegetables', price: '$2.99', stock: 12, image: '/img/newProducts/3.png', status: 'Low Stock' },
-        { id: 4, name: 'Fresh Orange Juice', category: 'Beverages', price: '$6.49', stock: 0, image: '/img/newProducts/6.png', status: 'Out of Stock' },
-        { id: 5, name: 'Organic Carrots', category: 'Vegetables', price: '$2.49', stock: 89, image: '/img/newProducts/7.png', status: 'In Stock' },
-        { id: 6, name: 'Fresh Green Grapes', category: 'Fruits', price: '$4.79', stock: 34, image: '/img/newProducts/8.png', status: 'In Stock' },
-        { id: 7, name: 'Organic Spinach', category: 'Vegetables', price: '$1.99', stock: 23, image: '/img/newProducts/9.png', status: 'In Stock' },
-        { id: 8, name: 'Chicken Breast', category: 'Meat', price: '$9.99', stock: 15, image: '/img/newProducts/10.png', status: 'Low Stock' },
-    ];
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`${API_URL}/api/products/getAllProduct`);
+            const data = await response.json();
+            setProduct(data.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Get product error:', error);
+            setError('Failed to fetch products');
+            setLoading(false);
+        }
+    }
 
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchQuery.toLowerCase())
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const filteredProducts = product.filter(p =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     const handleDelete = (id: number, name: string) => {
@@ -45,6 +56,22 @@ const ProductsList = () => {
             transition: { duration: 0.4 }
         }
     };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <p className="text-gray-500 text-lg">Loading products...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <p className="text-red-500 text-lg">{error}</p>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -98,26 +125,32 @@ const ProductsList = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {filteredProducts.map((product) => (
+                            {filteredProducts.map((p) => (
                                 <motion.tr
-                                    key={product.id}
+                                    key={p.id}
                                     variants={itemVariants}
                                     className="hover:bg-gray-50 transition">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center gap-3">
-                                            <img src={product.image} alt={product.name} className="w-12 h-12 object-contain rounded-lg bg-gray-50 p-1" />
-                                            <span className="font-medium text-gray-900">{product.name}</span>
+                                            <img src={p.imageUrl} alt={p.name} className="w-12 h-12 object-contain rounded-lg bg-gray-50 p-1" />
+                                            <span className="font-medium text-gray-900">{p.name}</span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{product.category}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{product.price}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{product.stock} units</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{p.category}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{p.price}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{p.stock} units</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${product.status === 'In Stock' ? 'bg-green-100 text-green-700' :
-                                            product.status === 'Low Stock' ? 'bg-yellow-100 text-yellow-700' :
-                                                'bg-red-100 text-red-700'
+                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${p.inStock && p.stock > 10
+                                                ? 'bg-green-100 text-green-700'
+                                                : p.inStock && p.stock <= 10
+                                                    ? 'bg-yellow-100 text-yellow-700'
+                                                    : 'bg-red-100 text-red-700'
                                             }`}>
-                                            {product.status}
+                                            {p.inStock && p.stock > 10
+                                                ? 'In Stock'
+                                                : p.inStock && p.stock <= 10
+                                                    ? 'Low Stock'
+                                                    : 'Out of Stock'}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
@@ -125,7 +158,7 @@ const ProductsList = () => {
                                             <motion.button
                                                 whileHover={{ scale: 1.1 }}
                                                 whileTap={{ scale: 0.9 }}
-                                                onClick={() => navigate(`/admin/products/edit/${product.id}`)}
+                                                onClick={() => navigate(`/admin/products/edit/${p.id}`)}
                                                 className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
                                                 title="Edit">
                                                 <Edit className="w-4 h-4" />
@@ -133,7 +166,7 @@ const ProductsList = () => {
                                             <motion.button
                                                 whileHover={{ scale: 1.1 }}
                                                 whileTap={{ scale: 0.9 }}
-                                                onClick={() => handleDelete(product.id, product.name)}
+                                                onClick={() => handleDelete(p.id, p.name)}
                                                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
                                                 title="Delete">
                                                 <Trash2 className="w-4 h-4" />

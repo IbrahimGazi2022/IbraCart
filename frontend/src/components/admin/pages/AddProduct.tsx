@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Upload, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { API_URL } from '../../../config/apiConfig';
 
 const AddProduct = () => {
     const navigate = useNavigate();
@@ -14,20 +15,33 @@ const AddProduct = () => {
         stock: '',
         description: '',
         weight: '',
-        inStock: true
+        inStock: true,
+        imageUrl: ""
     });
 
     const categories = ['Fruits', 'Vegetables', 'Beverages', 'Meat', 'Dairy', 'Bakery'];
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
+        if (!file) return;
+
+        // --- LOCAL PREVIEW ---
+        const reader = new FileReader();
+        reader.onloadend = () => setImagePreview(reader.result as string);
+        reader.readAsDataURL(file);
+
+        // --- UPLOAD TO CLOUDINARY ---
+        const data = new FormData();
+        data.append('file', file);
+        data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+        data.append('cloud_name', import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
+
+        const res = await fetch(
+            `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+            { method: 'POST', body: data }
+        );
+        const json = await res.json();
+        setFormData(prev => ({ ...prev, imageUrl: json.secure_url }));
     };
 
     const removeImage = () => {
@@ -42,12 +56,24 @@ const AddProduct = () => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form Data:', formData);
-        console.log('Image:', imagePreview);
-        alert('Product added successfully!');
-        navigate('/admin/products');
+
+        try {
+            const response = await fetch(`${API_URL}/api/products`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert('Product added successfully!');
+                navigate('/admin/products');
+            }
+        } catch (error) {
+            console.error('Add product error:', error);
+        }
     };
 
     return (

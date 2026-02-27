@@ -32,3 +32,13 @@ export const addNewProduct = async (req: Request, res: Response) => {
         res.status(500).json({ success: false, message: 'Server error', error });
     }
 };
+
+export const getAllProduct = async (req: Request, res: Response) => {
+    try {
+        const product = await prisma.product.findMany()
+        res.status(200).json({ success: true, data: product });
+    } catch (error) {
+        console.error('Add product error:', error);
+        res.status(500).json({ success: false, message: 'Server error', error });
+    }
+}
