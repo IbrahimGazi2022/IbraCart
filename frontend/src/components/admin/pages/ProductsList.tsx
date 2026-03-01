@@ -1,27 +1,29 @@
 import { motion } from 'framer-motion';
 import { Edit, Trash2, Plus, Search } from 'lucide-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { setProducts, setLoading, setError } from '../../../store/productSlice';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { API_URL } from '../../../config/apiConfig';
 
 const ProductsList = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { products, loading, error } = useSelector((state: RootState) => state.products);
     const [searchQuery, setSearchQuery] = useState('');
-    const [product, setProduct] = useState<any[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
 
     const fetchProducts = async () => {
         try {
-            setLoading(true);
+            dispatch(setLoading(true));
             const response = await fetch(`${API_URL}/api/products/getAllProduct`);
             const data = await response.json();
-            setProduct(data.data);
-            setLoading(false);
+            dispatch(setProducts(data.data));
+            dispatch(setLoading(false));
         } catch (error) {
             console.error('Get product error:', error);
-            setError('Failed to fetch products');
-            setLoading(false);
+            dispatch(setError('Failed to fetch products' || error));
+            dispatch(setLoading(false));
         }
     }
 
@@ -29,7 +31,7 @@ const ProductsList = () => {
         fetchProducts();
     }, []);
 
-    const filteredProducts = product.filter(p =>
+    const filteredProducts = products.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.category.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -141,10 +143,10 @@ const ProductsList = () => {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{p.stock} units</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${p.inStock && p.stock > 10
-                                                ? 'bg-green-100 text-green-700'
-                                                : p.inStock && p.stock <= 10
-                                                    ? 'bg-yellow-100 text-yellow-700'
-                                                    : 'bg-red-100 text-red-700'
+                                            ? 'bg-green-100 text-green-700'
+                                            : p.inStock && p.stock <= 10
+                                                ? 'bg-yellow-100 text-yellow-700'
+                                                : 'bg-red-100 text-red-700'
                                             }`}>
                                             {p.inStock && p.stock > 10
                                                 ? 'In Stock'
