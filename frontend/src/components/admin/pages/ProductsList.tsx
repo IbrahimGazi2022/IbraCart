@@ -3,6 +3,7 @@ import { Edit, Trash2, Plus, Search } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { setProducts, setLoading, setError } from '../../../store/productSlice';
+import Modal from "../../../components/reusableComp/Modal"
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { API_URL } from '../../../config/apiConfig';
@@ -12,6 +13,7 @@ const ProductsList = () => {
     const dispatch = useDispatch();
     const { products, loading, error } = useSelector((state: RootState) => state.products);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fetchProducts = async () => {
         try {
@@ -37,12 +39,6 @@ const ProductsList = () => {
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.category.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-    const handleDelete = (id: number, name: string) => {
-        if (confirm(`Are you sure you want to delete "${name}"?`)) {
-            console.log('Delete product:', id);
-        }
-    };
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -162,7 +158,7 @@ const ProductsList = () => {
                                             <motion.button
                                                 whileHover={{ scale: 1.1 }}
                                                 whileTap={{ scale: 0.9 }}
-                                                onClick={() => navigate(`/admin/products/edit/${p.id}`)}
+                                                onClick={() => setIsModalOpen(true)}
                                                 className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
                                                 title="Edit">
                                                 <Edit className="w-4 h-4" />
@@ -170,7 +166,7 @@ const ProductsList = () => {
                                             <motion.button
                                                 whileHover={{ scale: 1.1 }}
                                                 whileTap={{ scale: 0.9 }}
-                                                onClick={() => handleDelete(p.id, p.name)}
+                                                 onClick={() => setIsModalOpen(true)}
                                                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
                                                 title="Delete">
                                                 <Trash2 className="w-4 h-4" />
@@ -188,6 +184,13 @@ const ProductsList = () => {
                         <p className="text-gray-500">No products found</p>
                     </div>
                 )}
+
+                {/* --- MODAL --- */}
+                <Modal
+                    isOpen={isModalOpen}
+                    message="Admin only feature"
+                    onClose={() => setIsModalOpen(false)}
+                />
             </motion.div>
 
         </div>
