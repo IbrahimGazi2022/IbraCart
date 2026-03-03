@@ -28,7 +28,9 @@ const ProductsList = () => {
     }
 
     useEffect(() => {
-        fetchProducts();
+        if (products.length === 0) {
+            fetchProducts();
+        }
     }, []);
 
     const filteredProducts = products.filter(p =>
