@@ -1,31 +1,33 @@
-import cors from 'cors';
-import prisma from './DB/connectDB';
-import dotenv from 'dotenv';
-import express from 'express';
-import heroRoutes from './routes/heroRoutes';
-import productRoutes from './routes/productRoutes';
+    import cors from 'cors';
+    import prisma from './DB/connectDB';
+    import dotenv from 'dotenv';
+    import express from 'express';
+    import heroRoutes from './routes/heroRoutes';
+    import productRoutes from './routes/productRoutes';
+    import categories from './routes/categoryRoutes';
 
-dotenv.config();
+    dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 5000;
+    const app = express();
+    const PORT = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
+    app.use(cors());
+    app.use(express.json());
 
-app.use('/api/hero', heroRoutes);
-app.use('/api/products', productRoutes);
+    app.use('/api/hero', heroRoutes);
+    app.use('/api/products', productRoutes);
+    app.use('/api/categories', categories);
 
-app.get("/", (req, res) => {
-    res.json("Backend Running");
-});
+    app.get("/", (req, res) => {
+        res.json("Backend Running");
+    });
 
-prisma.$connect()
-    .then(() => console.log('Database connected successfully'))
-    .catch((err: any) => console.log('Database connection failed', err));
+    prisma.$connect()
+        .then(() => console.log('Database connected successfully'))
+        .catch((err: any) => console.log('Database connection failed', err));
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
 
-export default app;
+    export default app;
