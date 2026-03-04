@@ -1,22 +1,15 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, Variants, AnimatePresence, useInView } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star, ShoppingCart, Plus, Minus } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { setProducts, setLoading, setError } from '../../../store/productSlice';
+import { API_URL } from '../../../config/apiConfig';
 
 // --- TYPE ---
 interface Category {
     name: string;
     src: string;
-}
-
-interface Product {
-    img: string;
-    name: string;
-    category: string;
-    rating: number;
-    originalPrice: string;
-    price: string;
-    discount: string;
-    inStock: boolean;
 }
 
 interface CategoryItemProps {
@@ -26,249 +19,27 @@ interface CategoryItemProps {
 }
 
 interface ProductCardProps {
-    product: Product;
+    product: any;
 }
 
 // --- ALL CONSTANTS HERE ---
 const Categories: Category[] = [
-    {
-        name: "Dairy Products",
-        src: "../img/newProducts/3.png"
-    },
-    {
-        name: "Biscuits & Snacks",
-        src: "../img/newProducts/1.png"
-    },
-    {
-        name: "Beverages",
-        src: "../img/newProducts/2.png"
-    },
-    {
-        name: "Frozen Foods",
-        src: "../img/newProducts/4.png"
-    },
-    {
-        name: "Bakery Items",
-        src: "../img/newProducts/5.png"
-    },
-    {
-        name: "Breakfast Cereals",
-        src: "../img/newProducts/6.png"
-    },
-    {
-        name: "Chocolates",
-        src: "../img/newProducts/7.png"
-    },
-    {
-        name: "Cooking",
-        src: "../img/newProducts/8.png"
-    },
-    {
-        name: "Spices & Masala",
-        src: "../img/newProducts/9.png"
-    },
-    {
-        name: "Instant Foods",
-        src: "../img/newProducts/10.png"
-    },
-    {
-        name: "Sauces",
-        src: "../img/newProducts/11.png"
-    },
-    {
-        name: "Dry Fruits & Nuts",
-        src: "../img/newProducts/12.png"
-    },
-    {
-        name: "Baby Food",
-        src: "../img/newProducts/13.png"
-    },
-    {
-        name: "Health",
-        src: "../img/newProducts/14.png"
-    },
-    {
-        name: "Organic Products",
-        src: "../img/newProducts/15.png"
-    },
-    {
-        name: "Household Items",
-        src: "../img/newProducts/1.png"
-    }
-];
-
-// --- ALL PRODUCTS HERE ---
-const products: Product[] = [
-    {
-        img: '../img/newProducts/1.png',
-        name: 'Fresh Organic Apple',
-        category: 'Organic Products',
-        rating: 4,
-        originalPrice: '$6.99',
-        price: '$4.99',
-        discount: '29%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/2.png',
-        name: 'Fresh Banana Pack',
-        category: 'Organic Products',
-        rating: 5,
-        originalPrice: '$4.99',
-        price: '$3.49',
-        discount: '30%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/3.png',
-        name: 'Organic Tomatoes',
-        category: 'Organic Products',
-        rating: 3,
-        originalPrice: '$3.99',
-        price: '$2.99',
-        discount: '25%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/4.png',
-        name: 'Fresh Milk 1L',
-        category: 'Dairy Products',
-        rating: 4,
-        originalPrice: '$7.99',
-        price: '$5.99',
-        discount: '25%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/5.png',
-        name: 'Whole Wheat Bread',
-        category: 'Bakery Items',
-        rating: 5,
-        originalPrice: '$5.49',
-        price: '$3.99',
-        discount: '27%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/6.png',
-        name: 'Fresh Orange Juice',
-        category: 'Beverages',
-        rating: 3,
-        originalPrice: '$8.99',
-        price: '$6.49',
-        discount: '28%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/7.png',
-        name: 'Organic Carrots',
-        category: 'Organic Products',
-        rating: 4,
-        originalPrice: '$3.49',
-        price: '$2.49',
-        discount: '29%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/8.png',
-        name: 'Fresh Green Grapes',
-        category: 'Organic Products',
-        rating: 5,
-        originalPrice: '$6.49',
-        price: '$4.79',
-        discount: '26%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/9.png',
-        name: 'Organic Spinach',
-        category: 'Organic Products',
-        rating: 4,
-        originalPrice: '$2.99',
-        price: '$1.99',
-        discount: '33%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/10.png',
-        name: 'Chicken Breast',
-        category: 'Frozen Foods',
-        rating: 5,
-        originalPrice: '$12.99',
-        price: '$9.99',
-        discount: '23%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/11.png',
-        name: 'Brown Eggs Pack',
-        category: 'Dairy Products',
-        rating: 4,
-        originalPrice: '$5.99',
-        price: '$4.29',
-        discount: '28%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/12.png',
-        name: 'Organic Potatoes',
-        category: 'Organic Products',
-        rating: 3,
-        originalPrice: '$4.49',
-        price: '$3.19',
-        discount: '29%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/13.png',
-        name: 'Fresh Strawberries',
-        category: 'Organic Products',
-        rating: 5,
-        originalPrice: '$7.49',
-        price: '$5.49',
-        discount: '27%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/14.png',
-        name: 'Almond Milk 1L',
-        category: 'Beverages',
-        rating: 4,
-        originalPrice: '$6.99',
-        price: '$5.19',
-        discount: '26%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/15.png',
-        name: 'Organic Honey',
-        category: 'Health',
-        rating: 5,
-        originalPrice: '$9.99',
-        price: '$7.49',
-        discount: '25%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/17.png',
-        name: 'Organic Cucumber',
-        category: 'Organic Products',
-        rating: 3,
-        originalPrice: '$2.49',
-        price: '$1.79',
-        discount: '28%',
-        inStock: true
-    },
-    {
-        img: '../img/newProducts/18.png',
-        name: 'Fresh Yogurt Cup',
-        category: 'Dairy Products',
-        rating: 5,
-        originalPrice: '$3.99',
-        price: '$2.99',
-        discount: '25%',
-        inStock: true
-    }
+    { name: "Dairy Products", src: "../img/newProducts/3.png" },
+    { name: "Biscuits & Snacks", src: "../img/newProducts/1.png" },
+    { name: "Beverages", src: "../img/newProducts/2.png" },
+    { name: "Frozen Foods", src: "../img/newProducts/4.png" },
+    { name: "Bakery Items", src: "../img/newProducts/5.png" },
+    { name: "Breakfast Cereals", src: "../img/newProducts/6.png" },
+    { name: "Chocolates", src: "../img/newProducts/7.png" },
+    { name: "Cooking", src: "../img/newProducts/8.png" },
+    { name: "Spices & Masala", src: "../img/newProducts/9.png" },
+    { name: "Instant Foods", src: "../img/newProducts/10.png" },
+    { name: "Sauces", src: "../img/newProducts/11.png" },
+    { name: "Dry Fruits & Nuts", src: "../img/newProducts/12.png" },
+    { name: "Baby Food", src: "../img/newProducts/13.png" },
+    { name: "Health", src: "../img/newProducts/14.png" },
+    { name: "Organic Products", src: "../img/newProducts/15.png" },
+    { name: "Household Items", src: "../img/newProducts/1.png" }
 ];
 
 // --- ANIMATION VARIANTS ---
@@ -546,7 +317,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 whileHover="hover"
                 className='absolute top-[clamp(0.5rem,1vw,0.75rem)] right-[clamp(0.5rem,1vw,0.75rem)] bg-red-500 text-white text-[clamp(0.625rem,1.2vw,0.625rem)] font-bold px-[clamp(0.375rem,1vw,0.5rem)] py-[clamp(0.25rem,0.5vw,0.25rem)] rounded-full z-10'
             >
-                {product.discount} OFF
+                {product.discount}% OFF
             </motion.div>
 
             {/* Stock Status */}
@@ -563,7 +334,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 variants={imageVariants}
                 className='h-[clamp(5rem,15vw,6rem)] flex items-center justify-center mb-[clamp(0.75rem,2vw,1rem)]'
             >
-                <img src={product.img} alt={product.name} className='max-h-[clamp(4.5rem,13vw,5rem)] object-contain' />
+                <img src={product.imageUrl} alt={product.name} className='max-h-[clamp(4.5rem,13vw,5rem)] object-contain' />
             </motion.div>
 
             <h3 className='text-[clamp(0.813rem,1.5vw,0.875rem)] font-bold text-gray-800 line-clamp-1 mb-[clamp(0.25rem,0.5vw,0.25rem)]'>{product.name}</h3>
@@ -586,8 +357,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 variants={priceVariants}
                 className='flex items-baseline gap-[clamp(0.375rem,1vw,0.5rem)] mb-[clamp(0.75rem,2vw,1rem)]'
             >
-                <span className='text-[clamp(1rem,2vw,1.125rem)] font-bold text-green-600'>{product.price}</span>
-                <span className='text-[clamp(0.75rem,1.2vw,0.75rem)] text-gray-400 line-through'>{product.originalPrice}</span>
+                <span className='text-[clamp(1rem,2vw,1.125rem)] font-bold text-green-600'>${product.price}</span>
+                <span className='text-[clamp(0.75rem,1.2vw,0.75rem)] text-gray-400 line-through'>${product.originalPrice}</span>
             </motion.div>
 
             <div className='flex items-center justify-between gap-[clamp(0.375rem,1vw,0.5rem)]'>
@@ -633,6 +404,29 @@ const ShopByCategories = () => {
     const isHeaderInView = useInView(headerRef, { once: true, amount: 0.3 });
     const isCategoriesInView = useInView(categoriesRef, { once: true, amount: 0.2 });
     const isProductsInView = useInView(productsRef, { once: true, amount: 0.1 });
+
+    const dispatch = useDispatch();
+    const { products } = useSelector((state: RootState) => state.products);
+
+    const fetchProducts = async () => {
+        try {
+            dispatch(setLoading(true));
+            const response = await fetch(`${API_URL}/api/products/getAllProduct`);
+            const data = await response.json();
+            dispatch(setProducts(data.data));
+            dispatch(setLoading(false));
+        } catch (error) {
+            console.error('Get product error:', error);
+            dispatch(setError('Failed to fetch products'));
+            dispatch(setLoading(false));
+        }
+    };
+
+    useEffect(() => {
+        if (products.length === 0) {
+            fetchProducts();
+        }
+    }, []);
 
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
     const filteredProducts = selectedCategory === 'All' ? products : products.filter(product => product.category === selectedCategory);

@@ -1,12 +1,17 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Upload, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { API_URL } from '../../../config/apiConfig';
+import { useDispatch } from 'react-redux';
+import { setProducts } from '../../../store/productSlice';
 
 const AddProduct = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [progress, setProgress] = useState(0);
     const [formData, setFormData] = useState({
         name: '',
         category: '',
@@ -21,16 +26,29 @@ const AddProduct = () => {
 
     const categories = ['Fruits', 'Vegetables', 'Beverages', 'Meat', 'Dairy', 'Bakery'];
 
+    // Simulate progress while waiting for backend response
+    const startProgress = () => {
+        setProgress(0);
+        const interval = setInterval(() => {
+            setProgress(prev => {
+                if (prev >= 85) {
+                    clearInterval(interval);
+                    return 85; // hold at 85% until actual response
+                }
+                return prev + 5;
+            });
+        }, 150);
+        return interval;
+    };
+
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // --- LOCAL PREVIEW ---
         const reader = new FileReader();
         reader.onloadend = () => setImagePreview(reader.result as string);
         reader.readAsDataURL(file);
 
-        // --- UPLOAD TO CLOUDINARY ---
         const data = new FormData();
         data.append('file', file);
         data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
@@ -50,14 +68,13 @@ const AddProduct = () => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSubmitting(true);
+        const interval = startProgress();
 
         try {
             const response = await fetch(`${API_URL}/api/products`, {
@@ -67,11 +84,20 @@ const AddProduct = () => {
             });
 
             const data = await response.json();
+            clearInterval(interval);
+
             if (data.success) {
-                alert('Product added successfully!');
-                navigate('/admin/products');
+                setProgress(100);
+                dispatch(setProducts([]));
+                setTimeout(() => {
+                    alert('Product added successfully!');
+                    navigate('/admin/products');
+                }, 400);
             }
         } catch (error) {
+            clearInterval(interval);
+            setProgress(0);
+            setIsSubmitting(false);
             console.error('Add product error:', error);
         }
     };
@@ -130,9 +156,7 @@ const AddProduct = () => {
 
                 {/* --- PRODUCT NAME --- */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Product Name *
-                    </label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Product Name *</label>
                     <input
                         type="text"
                         name="name"
@@ -146,9 +170,7 @@ const AddProduct = () => {
 
                 {/* --- CATEGORY --- */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Category *
-                    </label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Category *</label>
                     <select
                         name="category"
                         value={formData.category}
@@ -165,9 +187,7 @@ const AddProduct = () => {
                 {/* --- PRICE & ORIGINAL PRICE --- */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            Price *
-                        </label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Price *</label>
                         <input
                             type="text"
                             name="price"
@@ -179,9 +199,7 @@ const AddProduct = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            Original Price
-                        </label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Original Price</label>
                         <input
                             type="text"
                             name="originalPrice"
@@ -196,9 +214,7 @@ const AddProduct = () => {
                 {/* --- STOCK & WEIGHT --- */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            Stock Quantity *
-                        </label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Stock Quantity *</label>
                         <input
                             type="number"
                             name="stock"
@@ -210,9 +226,7 @@ const AddProduct = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            Weight
-                        </label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Weight</label>
                         <input
                             type="text"
                             name="weight"
@@ -226,9 +240,7 @@ const AddProduct = () => {
 
                 {/* --- DESCRIPTION --- */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Description
-                    </label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
                     <textarea
                         name="description"
                         value={formData.description}
@@ -252,21 +264,49 @@ const AddProduct = () => {
                     </label>
                 </div>
 
+                {/* --- PROGRESS BAR --- */}
+                <AnimatePresence>
+                    {isSubmitting && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            className="space-y-1">
+                            <div className="flex justify-between text-xs text-gray-500 font-medium">
+                                <span>
+                                    {progress < 100 ? 'Saving product...' : 'Done!'}
+                                </span>
+                                <span>{progress}%</span>
+                            </div>
+                            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <motion.div
+                                    className="h-full bg-primary rounded-full"
+                                    initial={{ width: '0%' }}
+                                    animate={{ width: `${progress}%` }}
+                                    transition={{ ease: 'easeOut', duration: 0.3 }}
+                                />
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
                 {/* --- ACTION BUTTONS --- */}
                 <div className="flex gap-4 pt-4">
                     <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                        whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                         type="submit"
-                        className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-semibold shadow-lg hover:shadow-xl transition">
-                        Add Product
+                        disabled={isSubmitting}
+                        className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-semibold shadow-lg hover:shadow-xl transition disabled:opacity-60 disabled:cursor-not-allowed">
+                        {isSubmitting ? 'Adding...' : 'Add Product'}
                     </motion.button>
                     <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         type="button"
+                        disabled={isSubmitting}
                         onClick={() => navigate('/admin/products')}
-                        className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition">
+                        className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition disabled:opacity-60 disabled:cursor-not-allowed">
                         Cancel
                     </motion.button>
                 </div>
