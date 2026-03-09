@@ -3,7 +3,7 @@ import prisma from '../DB/connectDB';
 
 export const addCategory = async (req: Request, res: Response) => {
     try {
-        const { name, icon } = req.body;
+        const { name, imageUrl } = req.body;
 
         if (!name) {
             res.status(400).json({ success: false, message: 'Name is required' });
@@ -13,7 +13,7 @@ export const addCategory = async (req: Request, res: Response) => {
         const category = await prisma.category.create({
             data: {
                 name,
-                icon,
+                imageUrl,
             }
         });
 

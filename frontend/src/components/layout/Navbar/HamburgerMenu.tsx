@@ -103,7 +103,7 @@ const HamburgerMenu = memo(() => {
                             exit="exit"
                             className="fixed top-0 left-0 h-full w-[min(85vw,20rem)] bg-white shadow-2xl z-999 overflow-y-auto"
                         >
-                            <div className="sticky top-0 bg-primary text-white p-[clamp(1rem,3vw,1.5rem)] flex items-center justify-between z-10">
+                            <div className="sticky top-0 bg-primary text-white p-[clamp(1rem,3vw,1.5rem)] flex items-center justify-between z-1000">
                                 <h2 className="text-[clamp(1.125rem,3vw,1.25rem)] font-bold">Ibra Cart</h2>
                                 <button
                                     onClick={closeMenu}

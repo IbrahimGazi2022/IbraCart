@@ -1,78 +1,110 @@
 import { motion } from 'framer-motion';
-import { Plus, Edit, Trash2, Package } from 'lucide-react';
-import { useState } from 'react';
+import { Plus, Edit, Trash2, Package, Upload, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { setCategories, setLoading, setError } from '../../../store/categorySlice';
+import { API_URL } from '../../../config/apiConfig';
 
 const Categories = () => {
-    const [categories, setCategories] = useState([
-        { id: 1, name: 'Fruits', icon: '🍎', products: 24, color: 'bg-red-500' },
-        { id: 2, name: 'Vegetables', icon: '🥬', products: 32, color: 'bg-green-500' },
-        { id: 3, name: 'Beverages', icon: '🥤', products: 18, color: 'bg-blue-500' },
-        { id: 4, name: 'Meat', icon: '🍖', products: 12, color: 'bg-orange-500' },
-        { id: 5, name: 'Dairy', icon: '🥛', products: 15, color: 'bg-yellow-500' },
-        { id: 6, name: 'Bakery', icon: '🍞', products: 20, color: 'bg-purple-500' },
-    ]);
-
+    const dispatch = useDispatch();
+    const { categories, loading, error } = useSelector((state: RootState) => state.categories);
     const [showModal, setShowModal] = useState(false);
     const [editingCategory, setEditingCategory] = useState<any>(null);
-    const [formData, setFormData] = useState({ name: '', icon: '' });
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [formData, setFormData] = useState({ name: '', imageUrl: '' });
+
+    const fetchCategories = async () => {
+        try {
+            dispatch(setLoading(true));
+            const response = await fetch(`${API_URL}/api/categories/getAllCategory`);
+            const data = await response.json();
+            dispatch(setCategories(data.data));
+        } catch (error) {
+            dispatch(setError('Failed to fetch categories'));
+        } finally {
+            dispatch(setLoading(false));
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onloadend = () => setImagePreview(reader.result as string);
+        reader.readAsDataURL(file);
+
+        const data = new FormData();
+        data.append('file', file);
+        data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+        data.append('cloud_name', import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
+
+        const res = await fetch(
+            `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+            { method: 'POST', body: data }
+        );
+        const json = await res.json();
+        setFormData(prev => ({ ...prev, imageUrl: json.secure_url }));
+    };
 
     const handleAddNew = () => {
         setEditingCategory(null);
-        setFormData({ name: '', icon: '' });
+        setFormData({ name: '', imageUrl: '' });
+        setImagePreview(null);
         setShowModal(true);
     };
 
     const handleEdit = (category: any) => {
         setEditingCategory(category);
-        setFormData({ name: category.name, icon: category.icon });
+        setFormData({ name: category.name, imageUrl: category.imageUrl });
+        setImagePreview(category.imageUrl);
         setShowModal(true);
     };
 
-    const handleDelete = (id: number, name: string) => {
+    const handleDelete = async (id: number, name: string) => {
         if (confirm(`Are you sure you want to delete "${name}" category?`)) {
-            setCategories(categories.filter(cat => cat.id !== id));
+            await fetch(`${API_URL}/api/categories/${id}`, { method: 'DELETE' });
+            dispatch(setCategories(categories.filter(cat => cat.id !== id)));
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (editingCategory) {
-            setCategories(categories.map(cat =>
-                cat.id === editingCategory.id
-                    ? { ...cat, name: formData.name, icon: formData.icon }
-                    : cat
-            ));
+        try {
+            const response = await fetch(`${API_URL}/api/categories/addCategory`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            const data = await response.json();
+            if (data.success) {
+                fetchCategories();
+                setShowModal(false);
+                setFormData({ name: '', imageUrl: '' });
+                setImagePreview(null);
+            }
+        } catch (error) {
+            console.error('Add category error:', error);
         }
-        else {
-            const newCategory = {
-                id: Math.max(...categories.map(c => c.id)) + 1,
-                name: formData.name,
-                icon: formData.icon,
-                products: 0,
-                color: 'bg-gray-500'
-            };
-            setCategories([...categories, newCategory]);
-        }
-        setShowModal(false);
-        setFormData({ name: '', icon: '' });
     };
 
     const containerVariants = {
         hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.1 }
-        }
+        visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
     };
 
     const itemVariants = {
         hidden: { opacity: 0, scale: 0.9 },
-        visible: {
-            opacity: 1,
-            scale: 1,
-            transition: { duration: 0.4 }
-        }
+        visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } }
     };
+
+    if (loading) return <div className="flex items-center justify-center h-64"><p className="text-gray-500 text-lg">Loading categories...</p></div>;
+    if (error) return <div className="flex items-center justify-center h-64"><p className="text-red-500 text-lg">{error}</p></div>;
 
     return (
         <div className="space-y-6">
@@ -103,13 +135,28 @@ const Categories = () => {
                     <motion.div
                         key={category.id}
                         variants={itemVariants}
-                        whileHover={{ y: -5 }}
-                        className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all">
-                        <div className="flex items-start justify-between mb-4">
-                            <div className={`${category.color} w-16 h-16 rounded-xl flex items-center justify-center text-3xl`}>
-                                {category.icon}
+                        whileHover={{ y: -3 }}
+                        className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all overflow-hidden">
+                        <div className="flex items-center gap-4 p-4">
+                            {/* --- IMAGE --- */}
+                            <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+                                {category.imageUrl
+                                    ? <img src={category.imageUrl} alt={category.name} className="w-full h-full object-cover" />
+                                    : <div className="w-full h-full flex items-center justify-center text-gray-400"><Package className="w-8 h-8" /></div>
+                                }
                             </div>
-                            <div className="flex gap-2">
+
+                            {/* --- INFO --- */}
+                            <div className="flex-1 min-w-0">
+                                <h3 className="text-lg font-bold text-gray-900 truncate">{category.name}</h3>
+                                <div className="flex items-center gap-1 text-gray-500 mt-1">
+                                    <Package className="w-3.5 h-3.5" />
+                                    <span className="text-sm">{category.products || 0} Products</span>
+                                </div>
+                            </div>
+
+                            {/* --- ACTIONS --- */}
+                            <div className="flex gap-1 shrink-0">
                                 <motion.button
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
@@ -125,11 +172,6 @@ const Categories = () => {
                                     <Trash2 className="w-4 h-4" />
                                 </motion.button>
                             </div>
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{category.name}</h3>
-                        <div className="flex items-center gap-2 text-gray-600">
-                            <Package className="w-4 h-4" />
-                            <span className="text-sm">{category.products} Products</span>
                         </div>
                     </motion.div>
                 ))}
@@ -147,11 +189,33 @@ const Categories = () => {
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
 
+                            {/* --- IMAGE UPLOAD --- */}
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">Category Image</label>
+                                <div className="flex items-start gap-4">
+                                    {imagePreview ? (
+                                        <div className="relative">
+                                            <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded-lg bg-gray-50" />
+                                            <button
+                                                type="button"
+                                                onClick={() => { setImagePreview(null); setFormData(prev => ({ ...prev, imageUrl: '' })); }}
+                                                className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition">
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <label className="w-32 h-32 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary transition">
+                                            <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                                            <span className="text-xs text-gray-500">Upload Image</span>
+                                            <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                                        </label>
+                                    )}
+                                </div>
+                            </div>
+
                             {/* --- CATEGORY NAME --- */}
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                    Category Name *
-                                </label>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">Category Name *</label>
                                 <input
                                     type="text"
                                     value={formData.name}
@@ -159,22 +223,6 @@ const Categories = () => {
                                     required
                                     placeholder="e.g., Fruits"
                                     className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
-                                />
-                            </div>
-
-                            {/* --- ICON --- */}
-                            <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                    Icon (Emoji) *
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.icon}
-                                    onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-                                    required
-                                    placeholder="🍎"
-                                    maxLength={2}
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition text-2xl text-center"
                                 />
                             </div>
 

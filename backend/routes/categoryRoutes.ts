@@ -3,7 +3,7 @@ import { addCategory, getAllCategory } from '../controllers/categoryController';
 
 const router = Router();
 
-router.post('/add', addCategory);
-router.get('/getAll', getAllCategory);
+router.post('/addCategory', addCategory);
+router.get('/getAllCategory', getAllCategory);
 
 export default router;
