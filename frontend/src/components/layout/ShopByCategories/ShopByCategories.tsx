@@ -4,12 +4,13 @@ import { ChevronLeft, ChevronRight, Star, ShoppingCart, Plus, Minus } from 'luci
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { setProducts, setLoading, setError } from '../../../store/productSlice';
+import { setCategories } from '../../../store/categorySlice';
 import { API_URL } from '../../../config/apiConfig';
 
 // --- TYPE ---
 interface Category {
     name: string;
-    src: string;
+    imageUrl: string;
 }
 
 interface CategoryItemProps {
@@ -21,26 +22,6 @@ interface CategoryItemProps {
 interface ProductCardProps {
     product: any;
 }
-
-// --- ALL CONSTANTS HERE ---
-const Categories: Category[] = [
-    { name: "Dairy Products", src: "../img/newProducts/3.png" },
-    { name: "Biscuits & Snacks", src: "../img/newProducts/1.png" },
-    { name: "Beverages", src: "../img/newProducts/2.png" },
-    { name: "Frozen Foods", src: "../img/newProducts/4.png" },
-    { name: "Bakery Items", src: "../img/newProducts/5.png" },
-    { name: "Breakfast Cereals", src: "../img/newProducts/6.png" },
-    { name: "Chocolates", src: "../img/newProducts/7.png" },
-    { name: "Cooking", src: "../img/newProducts/8.png" },
-    { name: "Spices & Masala", src: "../img/newProducts/9.png" },
-    { name: "Instant Foods", src: "../img/newProducts/10.png" },
-    { name: "Sauces", src: "../img/newProducts/11.png" },
-    { name: "Dry Fruits & Nuts", src: "../img/newProducts/12.png" },
-    { name: "Baby Food", src: "../img/newProducts/13.png" },
-    { name: "Health", src: "../img/newProducts/14.png" },
-    { name: "Organic Products", src: "../img/newProducts/15.png" },
-    { name: "Household Items", src: "../img/newProducts/1.png" }
-];
 
 // --- ANIMATION VARIANTS ---
 
@@ -285,7 +266,7 @@ const CategoryItem = ({ category, isSelected, onClick }: CategoryItemProps) => (
                 variants={categoryIconVariants}
                 whileHover="hover"
                 whileTap="tap"
-                src={category.src}
+                src={category.imageUrl}
                 alt={category.name}
                 className='w-[clamp(2.5rem,6vw,3rem)] h-[clamp(2.5rem,6vw,3rem)] object-contain'
             />
@@ -404,6 +385,8 @@ const ShopByCategories = () => {
     const isHeaderInView = useInView(headerRef, { once: true, amount: 0.3 });
     const isCategoriesInView = useInView(categoriesRef, { once: true, amount: 0.2 });
     const isProductsInView = useInView(productsRef, { once: true, amount: 0.1 });
+    const { categories } = useSelector((state: RootState) => state.categories);
+
 
     const dispatch = useDispatch();
     const { products } = useSelector((state: RootState) => state.products);
@@ -421,6 +404,20 @@ const ShopByCategories = () => {
             dispatch(setLoading(false));
         }
     };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch(`${API_URL}/api/categories/getAllCategory`);
+            const data = await response.json();
+            dispatch(setCategories(data.data));
+        } catch (error) {
+            console.error('Get categories error:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (categories.length === 0) fetchCategories();
+    }, []);
 
     useEffect(() => {
         if (products.length === 0) {
@@ -523,7 +520,7 @@ const ShopByCategories = () => {
                             </p>
                         </motion.div>
 
-                        {Categories.map((cat, i) => (
+                        {categories.map((cat, i) => (
                             <CategoryItem
                                 key={i}
                                 category={cat}

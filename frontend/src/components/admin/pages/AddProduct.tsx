@@ -1,10 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Upload, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { API_URL } from '../../../config/apiConfig';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setProducts } from '../../../store/productSlice';
+import { setCategories } from '../../../store/categorySlice';
+import { RootState } from '../../../store/store';
 
 const AddProduct = () => {
     const navigate = useNavigate();
@@ -23,8 +25,21 @@ const AddProduct = () => {
         inStock: true,
         imageUrl: ""
     });
+    const { categories } = useSelector((state: RootState) => state.categories);
 
-    const categories = ['Fruits', 'Vegetables', 'Beverages', 'Meat', 'Dairy', 'Bakery'];
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch(`${API_URL}/api/categories/getAllCategory`);
+            const data = await response.json();
+            dispatch(setCategories(data.data));
+        } catch (error) {
+            console.error('Get categories error:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (categories.length === 0) fetchCategories();
+    }, []);
 
     // Simulate progress while waiting for backend response
     const startProgress = () => {
@@ -179,7 +194,7 @@ const AddProduct = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition">
                         <option value="">Select Category</option>
                         {categories.map((cat, index) => (
-                            <option key={index} value={cat}>{cat}</option>
+                            <option key={index} value={cat.name}>{cat.name}</option>
                         ))}
                     </select>
                 </div>
