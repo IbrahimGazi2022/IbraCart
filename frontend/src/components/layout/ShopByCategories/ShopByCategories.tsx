@@ -6,6 +6,7 @@ import { RootState } from '../../../store/store';
 import { setProducts, setLoading, setError } from '../../../store/productSlice';
 import { setCategories } from '../../../store/categorySlice';
 import { API_URL } from '../../../config/apiConfig';
+import useBreakpoint from '../../../hooks/useBreakpoint';
 
 // --- TYPE ---
 interface Category {
@@ -387,6 +388,9 @@ const ShopByCategories = () => {
     const isProductsInView = useInView(productsRef, { once: true, amount: 0.1 });
     const { categories } = useSelector((state: RootState) => state.categories);
 
+    const { isMobile, isTablet } = useBreakpoint();
+    const itemsPerPage = isMobile ? 4 : isTablet ? 6 : 10;
+    const [visibleCount, setVisibleCount] = useState(itemsPerPage);
 
     const dispatch = useDispatch();
     const { products } = useSelector((state: RootState) => state.products);
@@ -545,13 +549,30 @@ const ShopByCategories = () => {
                             exit="exit"
                             className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[clamp(0.75rem,2vw,1.25rem)]'
                         >
-                            {filteredProducts.slice(0, 12).map((prod, i) => (
+                            {filteredProducts.slice(0, visibleCount).map((prod, i) => (
                                 <ProductCard key={`${selectedCategory}-${i}`} product={prod} />
                             ))}
                         </motion.div>
                     </AnimatePresence>
                 </motion.div>
             </div>
+            {/* --- LOAD MORE BUTTON --- */}
+            {visibleCount < filteredProducts.length && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className='flex justify-center mt-8'
+                >
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setVisibleCount(prev => prev + itemsPerPage)}
+                        className='px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-full shadow-md hover:shadow-lg transition-all'
+                    >
+                        Load More
+                    </motion.button>
+                </motion.div>
+            )}
         </section>
     );
 };
