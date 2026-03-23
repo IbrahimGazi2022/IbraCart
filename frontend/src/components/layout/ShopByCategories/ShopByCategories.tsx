@@ -7,6 +7,7 @@ import { setProducts, setLoading, setError } from '../../../store/productSlice';
 import { setCategories } from '../../../store/categorySlice';
 import { API_URL } from '../../../config/apiConfig';
 import useBreakpoint from '../../../hooks/useBreakpoint';
+import { useNavigate } from 'react-router-dom';
 
 // --- TYPE ---
 interface Category {
@@ -280,16 +281,21 @@ const CategoryItem = ({ category, isSelected, onClick }: CategoryItemProps) => (
 
 const ProductCard = ({ product }: ProductCardProps) => {
     const [quantity, setQuantity] = useState(0);
+    const navigate = useNavigate();
 
     return (
         <motion.div
             variants={productCardVariants}
+            onClick={() => {
+                sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+                navigate(`/product/${product.id}`)
+            }}
             initial="hidden"
             animate="visible"
             exit="exit"
             whileHover="hover"
             layout
-            className='bg-white rounded-xl p-[clamp(0.75rem,2vw,1rem)] border border-gray-100 shadow-sm hover:shadow-md transition-all relative'
+            className='bg-white rounded-xl p-[clamp(0.75rem,2vw,1rem)] border border-gray-100 shadow-sm hover:shadow-md transition-all relative cursor-pointer'
         >
             {/* Discount Badge */}
             <motion.div
