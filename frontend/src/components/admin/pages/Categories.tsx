@@ -5,14 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { setCategories, setLoading, setError } from '../../../store/categorySlice';
 import { API_URL } from '../../../config/apiConfig';
+import { setProducts } from '../../../store/productSlice';
+import Modal from '../../reusableComp/Modal';
 
 const Categories = () => {
     const dispatch = useDispatch();
     const { categories, loading, error } = useSelector((state: RootState) => state.categories);
+    const { products } = useSelector((state: RootState) => state.products);
     const [showModal, setShowModal] = useState(false);
     const [editingCategory, setEditingCategory] = useState<any>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [formData, setFormData] = useState({ name: '', imageUrl: '' });
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fetchCategories = async () => {
         try {
@@ -29,6 +33,26 @@ const Categories = () => {
 
     useEffect(() => {
         fetchCategories();
+    }, []);
+
+    const fetchProducts = async () => {
+        try {
+            dispatch(setLoading(true));
+            const response = await fetch(`${API_URL}/api/products/getAllProduct`);
+            const data = await response.json();
+            dispatch(setProducts(data.data));
+            dispatch(setLoading(false));
+        } catch (error) {
+            console.error('Get product error:', error);
+            dispatch(setError('Failed to fetch products' || error));
+            dispatch(setLoading(false));
+        }
+    }
+
+    useEffect(() => {
+        if (products.length === 0) {
+            fetchProducts();
+        }
     }, []);
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,19 +83,6 @@ const Categories = () => {
         setShowModal(true);
     };
 
-    const handleEdit = (category: any) => {
-        setEditingCategory(category);
-        setFormData({ name: category.name, imageUrl: category.imageUrl });
-        setImagePreview(category.imageUrl);
-        setShowModal(true);
-    };
-
-    const handleDelete = async (id: number, name: string) => {
-        if (confirm(`Are you sure you want to delete "${name}" category?`)) {
-            await fetch(`${API_URL}/api/categories/${id}`, { method: 'DELETE' });
-            dispatch(setCategories(categories.filter(cat => cat.id !== id)));
-        }
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -151,23 +162,23 @@ const Categories = () => {
                                 <h3 className="text-lg font-bold text-gray-900 truncate">{category.name}</h3>
                                 <div className="flex items-center gap-1 text-gray-500 mt-1">
                                     <Package className="w-3.5 h-3.5" />
-                                    <span className="text-sm">{category.products || 0} Products</span>
+                                    <span className="text-sm">{products.filter(p => p.category === category.name).length || 0} Products</span>
                                 </div>
                             </div>
 
                             {/* --- ACTIONS --- */}
                             <div className="flex gap-1 shrink-0">
                                 <motion.button
+                                    onClick={() => setIsModalOpen(true)}
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
-                                    onClick={() => handleEdit(category)}
                                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
                                     <Edit className="w-4 h-4" />
                                 </motion.button>
                                 <motion.button
+                                    onClick={() => setIsModalOpen(true)}
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
-                                    onClick={() => handleDelete(category.id, category.name)}
                                     className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
                                     <Trash2 className="w-4 h-4" />
                                 </motion.button>
@@ -245,10 +256,16 @@ const Categories = () => {
                                 </motion.button>
                             </div>
                         </form>
+
                     </motion.div>
                 </div>
             )}
-
+            {/* --- MODAL --- */}
+            <Modal
+                isOpen={isModalOpen}
+                message="Admin only feature"
+                onClose={() => setIsModalOpen(false)}
+            />
         </div>
     );
 };
