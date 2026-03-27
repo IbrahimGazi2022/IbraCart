@@ -336,10 +336,12 @@ const UserIcon = memo(() => (
         >
             <User className='w-[clamp(20px,4vw,24px)] h-[clamp(20px,4vw,24px)]' />
         </motion.div>
-        <div className="hidden md:flex flex-col items-start">
-            <span className="text-[clamp(0.75rem,1.2vw,0.75rem)] text-gray-500 font-medium whitespace-nowrap">Hello,</span>
-            <span className="text-[clamp(0.875rem,1.5vw,0.875rem)] font-semibold tracking-widest whitespace-nowrap">My Account</span>
-        </div>
+        <a href="ibracart.vercel.app/admin">
+            <div className="hidden md:flex flex-col items-start">
+                <span className="text-[clamp(0.75rem,1.2vw,0.75rem)] text-gray-500 font-medium whitespace-nowrap">Hello,</span>
+                <span className="text-[clamp(0.875rem,1.5vw,0.875rem)] font-semibold tracking-widest whitespace-nowrap">My Account</span>
+            </div>
+        </a>
     </motion.button>
 ));
 UserIcon.displayName = 'UserIcon';
