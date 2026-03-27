@@ -1,7 +1,9 @@
 import { motion, Variants, useInView } from 'framer-motion';
 import { ArrowRight, Star, ShoppingBag } from 'lucide-react';
 import { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../../store/store';
 
 // --- TYPE DEFINITIONS ---
 interface Product {
@@ -13,91 +15,10 @@ interface Product {
     price: string;
     discount: string;
     inStock: boolean;
+    imageUrl: string;
 }
 
-// --- ALL CONSTANTS HERE ---
-const products: Product[] = [
-    {
-        id: 1,
-        img: '/img/newProducts/1.png',
-        name: 'Fresh Organic Apple',
-        rating: 4,
-        originalPrice: '$6.99',
-        price: '$4.99',
-        discount: '29%',
-        inStock: true
-    },
-    {
-        id: 2,
-        img: '/img/newProducts/2.png',
-        name: 'Fresh Banana Pack',
-        rating: 5,
-        originalPrice: '$4.99',
-        price: '$3.49',
-        discount: '30%',
-        inStock: true
-    },
-    {
-        id: 3,
-        img: '/img/newProducts/3.png',
-        name: 'Organic Tomatoes',
-        rating: 3,
-        originalPrice: '$3.99',
-        price: '$2.99',
-        discount: '25%',
-        inStock: true
-    },
-    {
-        id: 4,
-        img: '/img/newProducts/6.png',
-        name: 'Fresh Orange Juice',
-        rating: 3,
-        originalPrice: '$8.99',
-        price: '$6.49',
-        discount: '28%',
-        inStock: true
-    },
-    {
-        id: 4,
-        img: '/img/newProducts/7.png',
-        name: 'Organic Carrots',
-        rating: 4,
-        originalPrice: '$3.49',
-        price: '$2.49',
-        discount: '29%',
-        inStock: true
-    },
-    {
-        id: 5,
-        img: '/img/newProducts/8.png',
-        name: 'Fresh Green Grapes',
-        rating: 5,
-        originalPrice: '$6.49',
-        price: '$4.79',
-        discount: '26%',
-        inStock: true
-    },
-    {
-        id: 6,
-        img: '/img/newProducts/9.png',
-        name: 'Organic Spinach',
-        rating: 4,
-        originalPrice: '$2.99',
-        price: '$1.99',
-        discount: '33%',
-        inStock: true
-    },
-    {
-        id: 7,
-        img: '/img/newProducts/10.png',
-        name: 'Chicken Breast',
-        rating: 5,
-        originalPrice: '$12.99',
-        price: '$9.99',
-        discount: '23%',
-        inStock: true
-    }
-];
+
 
 // --- ANIMATION VARIANTS ---
 
@@ -315,6 +236,10 @@ const TopSellingItems = () => {
     const isBannerInView = useInView(bannerRef, { once: true, amount: 0.3 });
 
     const navigate = useNavigate();
+    const { products } = useSelector((state: RootState) => state.products);
+    const featuredProducts = products.filter(p => p.isFeatured);
+
+
 
     return (
         <section className='w-full py-[clamp(1rem,3vw,1.5rem)] bg-white'>
@@ -365,7 +290,7 @@ const TopSellingItems = () => {
                         animate={isGridInView ? "visible" : "hidden"}
                         className='flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-[clamp(0.75rem,2vw,1.25rem)]'
                     >
-                        {products.map((product: Product, index: number) => (
+                        {featuredProducts.map((product: Product, index: number) => (
                             <motion.div
                                 key={index}
                                 onClick={() => {
@@ -407,7 +332,7 @@ const TopSellingItems = () => {
                                     className='h-[clamp(8rem,20vw,12rem)] w-full overflow-hidden flex items-center justify-center rounded-[clamp(0.5rem,1.5vw,0.75rem)] mb-[clamp(0.75rem,2vw,1rem)] bg-gray-50/50'
                                 >
                                     <img
-                                        src={product.img}
+                                        src={product.imageUrl}
                                         className='w-[clamp(6rem,15vw,9rem)] h-[clamp(6rem,15vw,9rem)] object-contain'
                                         alt={product.name}
                                     />

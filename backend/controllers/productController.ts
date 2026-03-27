@@ -42,3 +42,19 @@ export const getAllProduct = async (req: Request, res: Response) => {
         res.status(500).json({ success: false, message: 'Server error', error });
     }
 }
+
+export const toggleFeatured = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { isFeatured } = req.body;
+
+        const product = await prisma.product.update({
+            where: { id: parseInt(req.params.id as string) },
+            data: { isFeatured }
+        });
+
+        res.status(200).json({ success: true, data: product });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error', error });
+    }
+};

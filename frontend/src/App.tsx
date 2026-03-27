@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems, ShopByCategories, Footer, SingleProduct, Cart, Checkout, Auth } from './components';
-import { AdminLayout, Dashboard, ProductsList, AddProduct, Categories, HeroSection } from './components/admin.index';
+import { AdminLayout, Dashboard, ProductsList, AddProduct, Categories, HeroSection, TopSelling } from './components/admin.index';
 import { useEffect } from 'react';
 
 const HomePage = () => {
@@ -53,6 +53,7 @@ const App = () => {
           <Route path="products/add" element={<AddProduct />} />
           <Route path="categories" element={<Categories />} />
           <Route path="/admin/hero" element={<HeroSection />} />
+          <Route path="/admin/top-selling" element={<TopSelling />} />
         </Route>
       </Routes>
     </Router>

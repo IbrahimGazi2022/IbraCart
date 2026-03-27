@@ -7,7 +7,8 @@ import {
     Users,
     Settings,
     X,
-    LayoutTemplate
+    LayoutTemplate,
+    TrendingUp
 } from 'lucide-react';
 
 interface AdminSidebarProps {
@@ -20,6 +21,7 @@ const AdminSidebar = ({ onClose }: AdminSidebarProps) => {
         { icon: LayoutTemplate, label: 'Hero Section', path: '/admin/hero' },
         { icon: Package, label: 'Products', path: '/admin/products' },
         { icon: FolderTree, label: 'Categories', path: '/admin/categories' },
+        { icon: TrendingUp, label: 'Top Selling Item', path: '/admin/top-selling' },
         { icon: ShoppingCart, label: 'Orders', path: '/admin/orders' },
         { icon: Users, label: 'Customers', path: '/admin/customers' },
         { icon: Settings, label: 'Settings', path: '/admin/settings' },
