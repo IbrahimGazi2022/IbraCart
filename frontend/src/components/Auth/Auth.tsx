@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { User, Mail, Lock, Phone, Eye, EyeOff } from 'lucide-react';
 
 // --- TYPES ---
-type AuthTab = 'login' | 'register';
+type AuthTab = 'login' | 'register' | 'admin';
 
 // --- ANIMATIONS ---
 const tabContentVariants: Variants = {
@@ -129,6 +129,37 @@ const RegisterForm = () => (
     </motion.div>
 );
 
+// --- ADMIN LOGIN FORM ---
+const AdminLoginForm = () => (
+    <motion.div
+        key='admin'
+        variants={tabContentVariants}
+        initial='hidden'
+        animate='visible'
+        exit='exit'
+        className='flex flex-col gap-[clamp(0.75rem,2vw,1rem)]'
+    >
+        <InputField label='Email' icon={Mail} placeholder='Enter your email' type='email' />
+        <InputField label='Password' icon={Lock} placeholder='Enter your password' type='password' />
+
+        {/* --- FORGOT PASSWORD --- */}
+        <div className='flex justify-end'>
+            <button className='text-[clamp(0.75rem,1.5vw,0.875rem)] text-primary hover:underline font-medium'>
+                Forgot Password?
+            </button>
+        </div>
+
+        {/* --- LOGIN BUTTON --- */}
+        <motion.button
+            whileHover={{ scale: 1.02, boxShadow: '0 10px 25px -5px rgba(13, 164, 135, 0.3)' }}
+            whileTap={{ scale: 0.98 }}
+            className='w-full bg-primary text-white py-[clamp(0.75rem,2vw,1rem)] rounded-lg font-bold text-[clamp(0.875rem,2vw,1rem)] mt-2 transition-colors'
+        >
+            Login
+        </motion.button>
+    </motion.div>
+);
+
 // --- MAIN COMPONENT ---
 const Auth = () => {
     const [activeTab, setActiveTab] = useState<AuthTab>('login');
@@ -143,7 +174,7 @@ const Auth = () => {
             >
                 {/* --- TABS --- */}
                 <div className='flex'>
-                    {(['login', 'register'] as AuthTab[]).map((tab) => (
+                    {(['login', 'register', 'admin'] as AuthTab[]).map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
@@ -167,7 +198,7 @@ const Auth = () => {
                 {/* --- FORM CONTENT --- */}
                 <div className='p-[clamp(1.25rem,4vw,2rem)]'>
                     <AnimatePresence mode='wait'>
-                        {activeTab === 'login' ? <LoginForm /> : <RegisterForm />}
+                    {activeTab === 'login' ? <LoginForm /> : activeTab === 'register' ? <RegisterForm /> : <AdminLoginForm />}
                     </AnimatePresence>
                 </div>
             </motion.div>
