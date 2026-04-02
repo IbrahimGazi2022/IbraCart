@@ -12,3 +12,6 @@ export { default as Cart } from '../components/Cart/Cart';
 export { default as Checkout } from '../components/Checkout/Checkout';
 export { default as Auth } from '../components/Auth/Auth';
 export { default as AdminLogin } from '../components/Auth/AdminLogin';
+
+// -- REUSABLE COMPONENTS -- 
+export { default as ProtectedRoute } from "./reusableComp/ProtectedRoute";

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems, ShopByCategories, Footer, SingleProduct, Cart, Checkout, Auth, AdminLogin } from './components';
+import { AnnouncementBar, Header, Hero, Navbar, PaymentOffers, TopSellingItems, ShopByCategories, Footer, SingleProduct, Cart, Checkout, Auth, AdminLogin, ProtectedRoute } from './components';
 import { AdminLayout, Dashboard, ProductsList, AddProduct, Categories, HeroSection, TopSelling } from './components/admin.index';
 import { useEffect } from 'react';
 
@@ -43,21 +43,31 @@ const App = () => {
         <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
         <Route path="/product/:id" element={<PublicLayout><SingleProduct /></PublicLayout>} />
         <Route path="/cart" element={<PublicLayout><Cart /></PublicLayout>} />
-        <Route path="/checkout" element={<PublicLayout><Checkout /></PublicLayout>} />
-        <Route path="/auth" element={<PublicLayout><Auth /></PublicLayout>} />
         <Route path='/admin/login' element={<AdminLogin />} />
+        <Route path="/auth" element={<PublicLayout><Auth /></PublicLayout>} />
 
-        {/* --- ADMIN ROUTES --- */}
-        <Route path="/admin" element={<AdminLayout />}>
+        {/* --- PROTECTED CHECKOUT ROUTES --- */}
+        <Route path="/checkout" element={
+          <ProtectedRoute>
+            <PublicLayout><Checkout /></PublicLayout>
+          </ProtectedRoute>
+        } />
+
+        {/* --- PROTECTED ADMIN ROUTES --- */}
+        <Route path="/admin" element={
+          <ProtectedRoute requiredRole="admin">
+            <AdminLayout />
+          </ProtectedRoute>
+        }>
           <Route index element={<Dashboard />} />
           <Route path="products" element={<ProductsList />} />
           <Route path="products/add" element={<AddProduct />} />
           <Route path="categories" element={<Categories />} />
-          <Route path="/admin/hero" element={<HeroSection />} />
-          <Route path="/admin/top-selling" element={<TopSelling />} />
+          <Route path="hero" element={<HeroSection />} />
+          <Route path="top-selling" element={<TopSelling />} />
         </Route>
       </Routes>
-    </Router>
+    </Router >
   );
 };
 
