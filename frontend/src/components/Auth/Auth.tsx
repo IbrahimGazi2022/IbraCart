@@ -4,11 +4,11 @@ import { User, Mail, Lock, Phone, Eye, EyeOff } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { API_URL } from '../../config/apiConfig';
 import { login } from '../../store/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Modal from '../reusableComp/Modal';
-    
+
 // --- TYPES ---
-type AuthTab = 'login' | 'register' | 'admin';
+type AuthTab = 'login' | 'register';
 
 // --- ANIMATIONS ---
 const tabContentVariants: Variants = {
@@ -76,7 +76,6 @@ const InputField = ({
                     placeholder={placeholder}
                     className='w-full border border-gray-200 rounded-lg px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.625rem,1.5vw,0.75rem)] text-[clamp(0.875rem,1.5vw,1rem)] focus:outline-none focus:border-primary transition-colors placeholder-gray-400 pr-10'
                 />
-                {/* --- PASSWORD TOGGLE --- */}
                 {isPassword && (
                     <button
                         type='button'
@@ -114,7 +113,7 @@ const LoginForm = () => {
                 if (data.user.role === 'admin') {
                     navigate('/admin');
                 } else {
-                    navigate('/user');
+                    navigate('/');
                 }
             }
         } catch (error) {
@@ -133,31 +132,15 @@ const LoginForm = () => {
             exit='exit'
             className='flex flex-col gap-[clamp(0.75rem,2vw,1rem)]'
         >
-            <InputField
-                label='Email'
-                icon={Mail}
-                placeholder='Enter your email'
-                type='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <InputField
-                label='Password'
-                icon={Lock}
-                placeholder='Enter your password'
-                type='password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
+            <InputField label='Email' icon={Mail} placeholder='Enter your email' type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+            <InputField label='Password' icon={Lock} placeholder='Enter your password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
 
-            {/* --- FORGOT PASSWORD --- */}
             <div className='flex justify-end'>
                 <button className='text-[clamp(0.75rem,1.5vw,0.875rem)] text-primary hover:underline font-medium'>
                     Forgot Password?
                 </button>
             </div>
 
-            {/* --- LOGIN BUTTON --- */}
             <motion.button
                 onClick={handleLogin}
                 disabled={isLoading}
@@ -165,14 +148,7 @@ const LoginForm = () => {
                 whileTap={!isLoading ? { scale: 0.98 } : {}}
                 className='w-full bg-primary text-white py-[clamp(0.75rem,2vw,1rem)] rounded-lg font-bold text-[clamp(0.875rem,2vw,1rem)] mt-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2'
             >
-                {isLoading ? (
-                    <>
-                        <Spinner />
-                        Logging in...
-                    </>
-                ) : (
-                    'Login'
-                )}
+                {isLoading ? <><Spinner />Logging in...</> : 'Login'}
             </motion.button>
         </motion.div>
     );
@@ -229,14 +205,7 @@ const RegisterForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 whileTap={!isLoading ? { scale: 0.98 } : {}}
                 className='w-full bg-primary text-white py-[clamp(0.75rem,2vw,1rem)] rounded-lg font-bold text-[clamp(0.875rem,2vw,1rem)] mt-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2'
             >
-                {isLoading ? (
-                    <>
-                        <Spinner />
-                        Registering...
-                    </>
-                ) : (
-                    'Register'
-                )}
+                {isLoading ? <><Spinner />Registering...</> : 'Register'}
             </motion.button>
 
             <Modal
@@ -247,67 +216,6 @@ const RegisterForm = ({ onSuccess }: { onSuccess: () => void }) => {
                     onSuccess();
                 }}
             />
-        </motion.div>
-    );
-};
-
-// --- ADMIN LOGIN FORM ---
-const AdminLoginForm = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const handleAdminLogin = async () => {
-        setIsLoading(true);
-        try {
-            const response = await fetch(`${API_URL}/api/auth/admin/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ email, password })
-            });
-            const data = await response.json();
-            if (response.ok) {
-                dispatch(login(data.user));
-                navigate('/admin');
-            }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    return (
-        <motion.div
-            key='admin'
-            variants={tabContentVariants}
-            initial='hidden'
-            animate='visible'
-            exit='exit'
-            className='flex flex-col gap-[clamp(0.75rem,2vw,1rem)]'
-        >
-            <InputField label='Email' icon={Mail} placeholder='Enter admin email' type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
-            <InputField label='Password' icon={Lock} placeholder='Enter admin password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-
-            <motion.button
-                onClick={handleAdminLogin}
-                disabled={isLoading}
-                whileHover={!isLoading ? { scale: 1.02, boxShadow: '0 10px 25px -5px rgba(13, 164, 135, 0.3)' } : {}}
-                whileTap={!isLoading ? { scale: 0.98 } : {}}
-                className='w-full bg-primary text-white py-[clamp(0.75rem,2vw,1rem)] rounded-lg font-bold text-[clamp(0.875rem,2vw,1rem)] mt-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2'
-            >
-                {isLoading ? (
-                    <>
-                        <Spinner />
-                        Logging in...
-                    </>
-                ) : (
-                    'Admin Login'
-                )}
-            </motion.button>
         </motion.div>
     );
 };
@@ -326,14 +234,13 @@ const Auth = () => {
             >
                 {/* --- TABS --- */}
                 <div className='flex'>
-                    {(['login', 'register', 'admin'] as AuthTab[]).map((tab) => (
+                    {(['login', 'register'] as AuthTab[]).map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
                             className={`flex-1 py-[clamp(0.875rem,2vw,1.125rem)] text-[clamp(0.875rem,2vw,1rem)] font-bold capitalize tracking-wide transition-colors relative ${activeTab === tab ? 'text-primary' : 'text-gray-400 hover:text-gray-600'}`}
                         >
                             {tab}
-                            {/* --- ACTIVE INDICATOR --- */}
                             {activeTab === tab && (
                                 <motion.div
                                     layoutId='activeTab'
@@ -352,11 +259,19 @@ const Auth = () => {
                     <AnimatePresence mode='wait'>
                         {activeTab === 'login'
                             ? <LoginForm />
-                            : activeTab === 'register'
-                                ? <RegisterForm onSuccess={() => setActiveTab('login')} />
-                                : <AdminLoginForm />
+                            : <RegisterForm onSuccess={() => setActiveTab('login')} />
                         }
                     </AnimatePresence>
+
+                    {/* --- ADMIN LINK --- */}
+                    <div className='text-center mt-4'>
+                        <Link
+                            to='/admin/login'
+                            className='text-xs text-gray-300 hover:text-gray-400 transition-colors'
+                        >
+                            Admin Login
+                        </Link>
+                    </div>
                 </div>
             </motion.div>
         </div>
